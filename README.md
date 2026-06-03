@@ -2,6 +2,7 @@
 
 A **backend API** for offering bookings for rocket launches.
 
+- **Rockets API**: Full CRUD for managing rockets with name, range, and capacity validation.
 - Rockets have limited seats; launch requests are validated against rocket capacity.
 
 - Launches are scheduled for specific rockets, with pricing and minimum passenger thresholds.
