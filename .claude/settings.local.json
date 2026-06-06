@@ -5,7 +5,11 @@
       "Bash(cd:*)",
       "Bash(nvm:*)",
       "Bash(winget install:*)",
-      "Bash(chmod:*)"
+      "Bash(chmod:*)",
+      "Bash(taskkill:*)",
+      "Edit",
+      "Write",
+      "Bash(pkill:*)"
     ]
   }
 }
