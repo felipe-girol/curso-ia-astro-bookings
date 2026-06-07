@@ -1,5 +1,6 @@
-import type { RocketRange } from "./rockets.type.js";
-import { MAX_CAPACITY, MIN_CAPACITY, ROCKET_RANGES } from "./rockets.type.js";
+import { type RocketRange, MAX_CAPACITY, MIN_CAPACITY, ROCKET_RANGES } from "./rockets.type.js";
+
+type FieldValidator = (value: unknown) => string | null;
 
 function validateName(value: unknown): string | null {
   if (typeof value !== "string" || value.trim() === "") return "name must be a non-empty string";
@@ -18,18 +19,20 @@ function validateCapacity(value: unknown): string | null {
   return null;
 }
 
+const FIELD_VALIDATORS: Record<string, FieldValidator> = {
+  name: validateName,
+  range: validateRange,
+  capacity: validateCapacity,
+};
+
 export function validateCreate(body: Record<string, unknown>): string[] {
-  return [
-    validateName(body.name),
-    validateRange(body.range),
-    validateCapacity(body.capacity),
-  ].filter((error): error is string => error !== null);
+  return Object.entries(FIELD_VALIDATORS)
+    .map(([field, validate]) => validate(body[field]))
+    .filter((error): error is string => error !== null);
 }
 
 export function validateUpdate(body: Record<string, unknown>): string[] {
-  return [
-    "name" in body ? validateName(body.name) : null,
-    "range" in body ? validateRange(body.range) : null,
-    "capacity" in body ? validateCapacity(body.capacity) : null,
-  ].filter((error): error is string => error !== null);
+  return Object.entries(FIELD_VALIDATORS)
+    .map(([field, validate]) => (field in body ? validate(body[field]) : null))
+    .filter((error): error is string => error !== null);
 }

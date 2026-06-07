@@ -3,6 +3,8 @@ import type { CreateRocketDto, UpdateRocketDto } from "./rockets.type.js";
 import * as repository from "./rockets.repository.js";
 import { validateCreate, validateUpdate } from "./rockets.validation.js";
 
+const ROCKET_NOT_FOUND = "Rocket not found";
+
 export const rocketsRouter = Router();
 
 rocketsRouter.get("/", (_req, res) => {
@@ -12,7 +14,7 @@ rocketsRouter.get("/", (_req, res) => {
 rocketsRouter.get("/:id", (req, res) => {
   const rocket = repository.findById(req.params.id);
   if (!rocket) {
-    res.status(404).json({ error: "Rocket not found" });
+    res.status(404).json({ error: ROCKET_NOT_FOUND });
     return;
   }
   res.json(rocket);
@@ -45,7 +47,7 @@ rocketsRouter.put("/:id", (req, res) => {
   if ("capacity" in req.body) dto.capacity = req.body.capacity;
   const rocket = repository.update(req.params.id, dto);
   if (!rocket) {
-    res.status(404).json({ error: "Rocket not found" });
+    res.status(404).json({ error: ROCKET_NOT_FOUND });
     return;
   }
   res.json(rocket);
@@ -54,7 +56,7 @@ rocketsRouter.put("/:id", (req, res) => {
 rocketsRouter.delete("/:id", (req, res) => {
   const deleted = repository.remove(req.params.id);
   if (!deleted) {
-    res.status(404).json({ error: "Rocket not found" });
+    res.status(404).json({ error: ROCKET_NOT_FOUND });
     return;
   }
   res.status(204).send();
