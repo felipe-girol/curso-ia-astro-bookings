@@ -1,3 +1,11 @@
+---
+name: clean
+description: Cleans TypeScript code.
+argument-hint: Provide the file or folder path to clean.
+agent: Explore
+model: inherit
+allowed-tools: Bash read Edit Glob Grep Agent WebFetch WebSearch 
+---
 # Clean TypeScript Code 
 
 ## Role

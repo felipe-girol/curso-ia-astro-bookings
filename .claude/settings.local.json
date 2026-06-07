@@ -9,7 +9,8 @@
       "Bash(taskkill:*)",
       "Edit",
       "Write",
-      "Bash(pkill:*)"
+      "Bash(pkill:*)",
+      "Bash(git push:*)"
     ]
   }
 }
