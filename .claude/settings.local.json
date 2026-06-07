@@ -10,7 +10,11 @@
       "Edit",
       "Write",
       "Bash(pkill:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(where gh:*)",
+      "Bash(git remote:*)",
+      "mcp__github__list_issues",
+      "mcp__github__create_issue"
     ]
   }
 }
