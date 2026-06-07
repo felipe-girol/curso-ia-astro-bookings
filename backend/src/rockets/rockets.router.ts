@@ -3,6 +3,7 @@ import type { CreateRocketDto, UpdateRocketDto } from "../types/rockets.type.js"
 import * as repository from "./rockets.repository.js";
 import { validateCreate, validateUpdate } from "../utils/validation.js";
 import { sendNotFound, sendValidationErrors } from "../utils/error-handler.js";
+import { logInfo } from "../utils/logger.js";
 
 const ROCKET_NOT_FOUND = "Rocket not found";
 
@@ -33,6 +34,7 @@ rocketsRouter.post("/", (req, res) => {
     capacity: req.body.capacity,
   };
   const rocket = repository.create(dto);
+  logInfo("Rockets", `Created rocket ${rocket.id}`);
   res.status(201).json(rocket);
 });
 
@@ -51,6 +53,7 @@ rocketsRouter.put("/:id", (req, res) => {
     sendNotFound(res, ROCKET_NOT_FOUND);
     return;
   }
+  logInfo("Rockets", `Updated rocket ${req.params.id}`);
   res.json(rocket);
 });
 
@@ -60,5 +63,6 @@ rocketsRouter.delete("/:id", (req, res) => {
     sendNotFound(res, ROCKET_NOT_FOUND);
     return;
   }
+  logInfo("Rockets", `Deleted rocket ${req.params.id}`);
   res.status(204).send();
 });
