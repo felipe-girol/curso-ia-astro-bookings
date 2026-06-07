@@ -1,4 +1,4 @@
-import { type RocketRange, MAX_CAPACITY, MIN_CAPACITY, ROCKET_RANGES } from "./rockets.type.js";
+import { type RocketRange, MAX_CAPACITY, MIN_CAPACITY, ROCKET_RANGES } from "../types/rockets.type.js";
 
 type FieldValidator = (value: unknown) => string | null;
 

@@ -59,8 +59,12 @@ npm run test:smoke
 │       ├── main.ts            # Entry point (port 3000)
 │       ├── routes/
 │       │   └── index.ts       # Root router (/api)
+│       ├── types/
+│       │   └── rockets.type.ts       # Types and DTOs
+│       ├── utils/
+│       │   ├── validation.ts         # Rocket validation functions
+│       │   └── error-handler.ts      # Centralized error responses
 │       └── rockets/
-│           ├── rockets.type.ts       # Types and DTOs
 │           ├── rockets.repository.ts # In-memory data store
 │           └── rockets.router.ts     # CRUD endpoints
 └── frontend/                  # Vue 3 + Vite app

@@ -1,7 +1,8 @@
 import { Router } from "express";
-import type { CreateRocketDto, UpdateRocketDto } from "./rockets.type.js";
+import type { CreateRocketDto, UpdateRocketDto } from "../types/rockets.type.js";
 import * as repository from "./rockets.repository.js";
-import { validateCreate, validateUpdate } from "./rockets.validation.js";
+import { validateCreate, validateUpdate } from "../utils/validation.js";
+import { sendNotFound, sendValidationErrors } from "../utils/error-handler.js";
 
 const ROCKET_NOT_FOUND = "Rocket not found";
 
@@ -14,7 +15,7 @@ rocketsRouter.get("/", (_req, res) => {
 rocketsRouter.get("/:id", (req, res) => {
   const rocket = repository.findById(req.params.id);
   if (!rocket) {
-    res.status(404).json({ error: ROCKET_NOT_FOUND });
+    sendNotFound(res, ROCKET_NOT_FOUND);
     return;
   }
   res.json(rocket);
@@ -23,7 +24,7 @@ rocketsRouter.get("/:id", (req, res) => {
 rocketsRouter.post("/", (req, res) => {
   const errors = validateCreate(req.body);
   if (errors.length > 0) {
-    res.status(400).json({ errors });
+    sendValidationErrors(res, errors);
     return;
   }
   const dto: CreateRocketDto = {
@@ -38,7 +39,7 @@ rocketsRouter.post("/", (req, res) => {
 rocketsRouter.put("/:id", (req, res) => {
   const errors = validateUpdate(req.body);
   if (errors.length > 0) {
-    res.status(400).json({ errors });
+    sendValidationErrors(res, errors);
     return;
   }
   const dto: UpdateRocketDto = {};
@@ -47,7 +48,7 @@ rocketsRouter.put("/:id", (req, res) => {
   if ("capacity" in req.body) dto.capacity = req.body.capacity;
   const rocket = repository.update(req.params.id, dto);
   if (!rocket) {
-    res.status(404).json({ error: ROCKET_NOT_FOUND });
+    sendNotFound(res, ROCKET_NOT_FOUND);
     return;
   }
   res.json(rocket);
@@ -56,7 +57,7 @@ rocketsRouter.put("/:id", (req, res) => {
 rocketsRouter.delete("/:id", (req, res) => {
   const deleted = repository.remove(req.params.id);
   if (!deleted) {
-    res.status(404).json({ error: ROCKET_NOT_FOUND });
+    sendNotFound(res, ROCKET_NOT_FOUND);
     return;
   }
   res.status(204).send();

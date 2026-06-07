@@ -1,5 +1,5 @@
 import crypto from "node:crypto";
-import type { CreateRocketDto, Rocket, UpdateRocketDto } from "./rockets.type.js";
+import type { CreateRocketDto, Rocket, UpdateRocketDto } from "../types/rockets.type.js";
 
 const rockets: Map<string, Rocket> = new Map();
 
