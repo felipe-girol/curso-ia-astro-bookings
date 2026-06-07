@@ -61,9 +61,12 @@ npm run test:smoke
 │       │   └── index.ts       # Root router (/api)
 │       ├── types/
 │       │   └── rockets.type.ts       # Types and DTOs
+│       ├── middleware/
+│       │   └── request-logger.ts     # HTTP request/response logging middleware
 │       ├── utils/
 │       │   ├── validation.ts         # Rocket validation functions
-│       │   └── error-handler.ts      # Centralized error responses
+│       │   ├── error-handler.ts      # Centralized error responses
+│       │   └── logger.ts             # Structured logger (logInfo/logWarn/logError/logDebug)
 │       └── rockets/
 │           ├── rockets.repository.ts # In-memory data store
 │           └── rockets.router.ts     # CRUD endpoints
@@ -84,6 +87,12 @@ npm run test:smoke
 - `POST /api/rockets` - Create rocket
 - `PUT /api/rockets/:id` - Update rocket
 - `DELETE /api/rockets/:id` - Delete rocket
+
+### Logging
+- Format: `[TIMESTAMP] [LEVEL] [CONTEXT] message`
+- Levels: `debug` < `info` < `warn` < `error`
+- Control via `LOG_LEVEL` env var (default: `info`)
+- HTTP requests, CRUD operations and errors are logged automatically
 
 ### Rocket Validation Rules
 - `name`: required, non-empty string
