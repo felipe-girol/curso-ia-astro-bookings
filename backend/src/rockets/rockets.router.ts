@@ -28,11 +28,8 @@ rocketsRouter.post("/", (req, res) => {
     sendValidationErrors(res, errors);
     return;
   }
-  const dto: CreateRocketDto = {
-    name: req.body.name,
-    range: req.body.range,
-    capacity: req.body.capacity,
-  };
+  const { name, range, capacity } = req.body;
+  const dto: CreateRocketDto = { name, range, capacity };
   const rocket = repository.create(dto);
   logInfo("Rockets", `Created rocket ${rocket.id}`);
   res.status(201).json(rocket);

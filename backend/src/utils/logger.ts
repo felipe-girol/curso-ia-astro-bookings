@@ -7,14 +7,14 @@ const LOG_LEVELS: Record<LogLevel, number> = {
   error: 3,
 } as const;
 
-function getConfiguredLevel(): LogLevel {
+const configuredLevel: LogLevel = (() => {
   const env = process.env.LOG_LEVEL?.toLowerCase();
   if (env && env in LOG_LEVELS) return env as LogLevel;
   return "info";
-}
+})();
 
 function shouldLog(level: LogLevel): boolean {
-  return LOG_LEVELS[level] >= LOG_LEVELS[getConfiguredLevel()];
+  return LOG_LEVELS[level] >= LOG_LEVELS[configuredLevel];
 }
 
 function formatMessage(level: LogLevel, context: string, message: string): string {
