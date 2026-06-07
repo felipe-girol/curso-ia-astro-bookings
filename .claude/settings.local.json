@@ -14,7 +14,10 @@
       "Bash(where gh:*)",
       "Bash(git remote:*)",
       "mcp__github__list_issues",
-      "mcp__github__create_issue"
+      "mcp__github__create_issue",
+      "mcp__github__get_issue",
+      "mcp__github__create_pull_request",
+      "Bash(git add:*)"
     ]
   }
 }

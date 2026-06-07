@@ -13,7 +13,7 @@ When asked for creating a GitHub issue, follow these steps:
   - Draft the issue title from the specification or context; if unclear, ask.
   - Identify the repo remote URL from Context. 
   - If not, identify it by using local git commands to get the remote URL.
-    - Save the remote URL at [AGENTS.md](AGENTS.md) for later use.
+    - Save the remote URL at [CLAUDE.md](../../../CLAUDE.md) for later use.
    
 2. **Create the GitHub issue**:
   - Use the GitHub MCP tool to create the issue in the current repository.
