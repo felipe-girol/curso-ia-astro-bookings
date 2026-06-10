@@ -41,10 +41,12 @@ rocketsRouter.put("/:id", (req, res) => {
     sendValidationErrors(res, errors);
     return;
   }
-  const dto: UpdateRocketDto = {};
-  if ("name" in req.body) dto.name = req.body.name;
-  if ("range" in req.body) dto.range = req.body.range;
-  if ("capacity" in req.body) dto.capacity = req.body.capacity;
+  const { name, range, capacity } = req.body;
+  const dto: UpdateRocketDto = {
+    ...("name" in req.body && { name }),
+    ...("range" in req.body && { range }),
+    ...("capacity" in req.body && { capacity }),
+  };
   const rocket = repository.update(req.params.id, dto);
   if (!rocket) {
     sendNotFound(res, ROCKET_NOT_FOUND);

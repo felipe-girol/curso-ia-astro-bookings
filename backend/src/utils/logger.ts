@@ -5,7 +5,7 @@ const LOG_LEVELS: Record<LogLevel, number> = {
   info: 1,
   warn: 2,
   error: 3,
-} as const;
+};
 
 const configuredLevel: LogLevel = (() => {
   const env = process.env.LOG_LEVEL?.toLowerCase();
