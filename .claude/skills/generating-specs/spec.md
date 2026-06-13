@@ -1,6 +1,8 @@
 # Short name Specification
-- **Type**: {feat/bug/chore}
-- **Status**: Draft{Draft, Planned, Coded, Verified, Released} 
+
+- **Reference**: [PRD](../../../IA/PRD.md) {List of FR or TR numbers}.
+- **Issue**: {_to be created_[#ID](URL to the issue)}
+- **Status**: Draft{Could be Draft, Planned, In Progress, Completed, etc.}
 
 ## Problem Description
 
