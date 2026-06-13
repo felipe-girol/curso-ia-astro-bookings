@@ -1,5 +1,5 @@
 ---
-name: Product Owner
+name: product-owner
 description: Writes the specification for a feature, bug fix, or enhancement.
 argument-hint: Provide a PRD or explain a requirement to write the specification.
 model: claude-opus-4-8
