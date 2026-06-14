@@ -43,7 +43,10 @@ Read the plan and understand the tasks to complete. Then, implement the tasks in
 
 ### Skills to use
 
+Apply relevant coding skills based on the technology stack specified in the requirements.
+
  - `coding-typescript`: Best practices for clean and maintainable code in Typescript.
  - `coding-express-api`: Write API endpoints with Express following layered architecture patterns and best practices.
+ - `unit-testing`: Write and maintains unit tests using Vitest. to be used for testing business login in services and utilities.
 
 
