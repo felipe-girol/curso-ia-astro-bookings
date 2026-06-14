@@ -58,9 +58,9 @@ Expose the feature under `/api/customers`.
 
 ### Step 7: Add Playwright acceptance tests
 Cover all acceptance criteria in `tests/customers.spec.ts`.
-- [ ] POST valid → 201 with `id`, `email`, `name`, `phone`.
-- [ ] POST duplicate email → 409; POST missing/empty email/name/phone → 400.
-- [ ] GET list returns array; GET `/:id` returns details; GET unknown id → 404.
+- [x] POST valid → 201 with `id`, `email`, `name`, `phone`.
+- [x] POST duplicate email → 409; POST missing/empty email/name/phone → 400.
+- [x] GET list returns array; GET `/:id` returns details; GET unknown id → 404.
 
 ### Step 8: Verify and finalize
 Build, run, and update project tracking.

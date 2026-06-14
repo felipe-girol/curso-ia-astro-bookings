@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR6.
 - **Issue**: _to be created_
-- **Status**: Coded
+- **Status**: Done
 
 ## Problem Description
 
@@ -43,12 +43,12 @@ In-memory Map storage, consistent with the existing rockets repository pattern.
 
 ## Acceptance Criteria
 
-- [ ] WHEN a client sends a valid POST request with email, name, and phone, THE API SHALL register a new customer and return it with a unique identifier and status 201.
-- [ ] IF a client sends a POST request with an email that already exists, THEN THE API SHALL reject the request with a 409 conflict error.
-- [ ] IF a client sends a POST request with a missing or empty email, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] IF a client sends a POST request with a missing or empty name, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] IF a client sends a POST request with a missing or empty phone, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] WHEN a client sends a GET request to the customers endpoint, THE API SHALL return a list of all registered customers.
-- [ ] WHEN a client sends a GET request with an existing customer identifier, THE API SHALL return the details of that customer.
-- [ ] IF a client sends a GET request with a non-existent customer identifier, THEN THE API SHALL respond with a 404 not-found error.
-- [ ] WHEN a customer is registered or retrieved, THE API SHALL log the operation using the structured logger.
+- [x] WHEN a client sends a valid POST request with email, name, and phone, THE API SHALL register a new customer and return it with a unique identifier and status 201.
+- [x] IF a client sends a POST request with an email that already exists, THEN THE API SHALL reject the request with a 409 conflict error.
+- [x] IF a client sends a POST request with a missing or empty email, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] IF a client sends a POST request with a missing or empty name, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] IF a client sends a POST request with a missing or empty phone, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] WHEN a client sends a GET request to the customers endpoint, THE API SHALL return a list of all registered customers.
+- [x] WHEN a client sends a GET request with an existing customer identifier, THE API SHALL return the details of that customer.
+- [x] IF a client sends a GET request with a non-existent customer identifier, THEN THE API SHALL respond with a 404 not-found error.
+- [x] WHEN a customer is registered or retrieved, THE API SHALL log the operation using the structured logger.
