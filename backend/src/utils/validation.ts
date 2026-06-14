@@ -1,10 +1,25 @@
 import { type RocketRange, MAX_CAPACITY, MIN_CAPACITY, ROCKET_RANGES } from "../types/rockets.type.js";
 
-type FieldValidator = (value: unknown) => string | null;
+export type FieldValidator = (value: unknown) => string | null;
 
-function validateName(value: unknown): string | null {
-  if (typeof value !== "string" || value.trim() === "") return "name must be a non-empty string";
-  return null;
+/** Builds a validator that requires a trimmed, non-empty string. */
+export function nonEmptyString(field: string): FieldValidator {
+  return (value: unknown): string | null =>
+    typeof value === "string" && value.trim() !== "" ? null : `${field} must be a non-empty string`;
+}
+
+/**
+ * Runs a set of field validators against a body and collects the error messages.
+ * When `partial` is true, fields absent from the body are skipped (used for updates).
+ */
+export function collectErrors(
+  validators: Record<string, FieldValidator>,
+  body: Record<string, unknown>,
+  { partial = false }: { partial?: boolean } = {},
+): string[] {
+  return Object.entries(validators)
+    .map(([field, validate]) => (partial && !(field in body) ? null : validate(body[field])))
+    .filter((error): error is string => error !== null);
 }
 
 function validateRange(value: unknown): string | null {
@@ -20,19 +35,15 @@ function validateCapacity(value: unknown): string | null {
 }
 
 const FIELD_VALIDATORS: Record<string, FieldValidator> = {
-  name: validateName,
+  name: nonEmptyString("name"),
   range: validateRange,
   capacity: validateCapacity,
 };
 
 export function validateCreate(body: Record<string, unknown>): string[] {
-  return Object.entries(FIELD_VALIDATORS)
-    .map(([field, validate]) => validate(body[field]))
-    .filter((error): error is string => error !== null);
+  return collectErrors(FIELD_VALIDATORS, body);
 }
 
 export function validateUpdate(body: Record<string, unknown>): string[] {
-  return Object.entries(FIELD_VALIDATORS)
-    .map(([field, validate]) => (field in body ? validate(body[field]) : null))
-    .filter((error): error is string => error !== null);
+  return collectErrors(FIELD_VALIDATORS, body, { partial: true });
 }
