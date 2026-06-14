@@ -26,7 +26,7 @@ AstroBookings is a backend API (with a companion Vue frontend) for offering and 
 - **Frontend**: Vue 3.5 + Vite 6.
 - **Persistence**: In-memory `Map` repositories (no external database).
 - **Security**: CORS enabled (no auth/authorization in scope).
-- **Testing**: Playwright (smoke + API tests against a live backend).
+- **Testing**: Playwright (smoke + API tests against a live backend) and Vitest (fast, isolated backend unit tests for repositories, validators, and utils).
 - **Logging**: Custom structured logger writing to `console` (stdout/stderr).
 - **IDs**: `node:crypto` `randomUUID`.
 
@@ -56,6 +56,10 @@ cd frontend && npm run build
 # Test (backend must be running)
 npm test
 npm run test:smoke
+
+# Unit test backend (Vitest, no live server)
+cd backend && npm run test       # single run
+cd backend && npm run test:dev   # watch mode
 ```
 
 ## Systems Architecture
@@ -258,3 +262,9 @@ API surface (target):
 - **Status**: Accepted
 - **Context**: Consistency, DRY, and the established rockets implementation.
 - **Consequences**: Uniform error/response/log shapes; new features extend shared utilities instead of reinventing them.
+
+### ADR 7: Vitest for backend unit testing
+- **Decision**: Use Vitest for fast, isolated backend unit tests, colocated with the source as `backend/src/**/*.test.ts`; keep Playwright for HTTP/API end-to-end coverage at the repo root.
+- **Status**: Accepted
+- **Context**: The backend had no unit tests — only Playwright suites that require a live server, making pure-logic checks slow to run. Vitest is ESM-native, runs TypeScript via esbuild with no extra config under the existing `tsx`/NodeNext setup, and offers a Jest-compatible API.
+- **Consequences**: Repositories, validators, utils, and services gain quick feedback via `npm run test:dev` (watch) / `npm run test` (CI) from `backend/`. Two layers of testing must be maintained, but each covers a distinct concern (unit logic vs. end-to-end behavior). NodeNext `.js` import extensions remain valid in test files.

@@ -102,3 +102,8 @@ Out of scope:
 - **Description**: Cover the API with Playwright smoke and endpoint tests run against a live backend.
 - **Priority**: Medium
 - **Status**: InProgress
+
+### TR6 Unit testing
+- **Description**: Cover backend logic (repositories, validators, utils, services) with fast, isolated Vitest unit tests colocated as `backend/src/**/*.test.ts`.
+- **Priority**: Medium
+- **Status**: InProgress

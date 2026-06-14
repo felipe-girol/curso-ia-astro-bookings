@@ -15,7 +15,7 @@
 - Frontend: **Vue 3.5 with Vite 6**
 - Database: **In-memory Map (no external DB)**
 - Security: **CORS enabled** (no auth in scope)
-- Testing: **Playwright**
+- Testing: **Playwright** (E2E/smoke) and **Vitest** (backend unit)
 - Logging: **console (stdout)**
 
 ### Development workflow
@@ -42,7 +42,13 @@ npm test
 
 # Run only smoke tests
 npm run test:smoke
+
+# Run backend unit tests (Vitest)
+cd backend && npm run test       # single run (CI-friendly)
+cd backend && npm run test:dev   # watch mode
 ```
+
+> Unit tests live in `backend/src/**/*.test.ts`, colocated next to the code they cover.
 
 ### Architecture
 - Functional layered modules; no classes. Favor composition.
