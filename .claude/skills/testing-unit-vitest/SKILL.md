@@ -1,5 +1,5 @@
 ---
-name: unit-test
+name: testing-unit-vitest
 description: >
   Writes fast, isolated Vitest unit tests for backend logic (repositories,
   validators, utils, services). To be used when adding or updating unit tests

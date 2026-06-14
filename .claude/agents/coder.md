@@ -47,6 +47,6 @@ Apply relevant coding skills based on the technology stack specified in the requ
 
  - `coding-typescript`: Best practices for clean and maintainable code in Typescript.
  - `coding-express-api`: Write API endpoints with Express following layered architecture patterns and best practices.
- - `unit-testing`: Write and maintains unit tests using Vitest. to be used for testing business login in services and utilities.
+ - `testing-unit-vitest`: Write and maintains unit tests using Vitest. to be used for testing business login in services and utilities.
 
 
