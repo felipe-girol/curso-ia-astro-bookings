@@ -12,6 +12,38 @@ Act as a senior software developer.
 
 ## Task
 
-Write clean, functional code to implement the requirements.
+- Before starting to code, ensure you have git branch created for this implementation. 
+- If not, 
+  - Commit any pending changes before creating the branch.
+  - Create a git branch based and switch to it
+  - Use the naming convention {type}/{short-name}
+    - (e.g., feat/add-login). 
+
+- Write clean, functional code to implement the requirements. 
+  - Ensure code compiles and runs without errors.
+
+- Write unit tests for the implemented code.
+  - Ensure unit tests pass successfully.
+
+- Do not write e2e verification tests or documentation at this stage.
+- Return a concise summary with the implementation status, key changed files, unit-test status, and blockers for verification.
+
+### Project Progress management 
+
+When finished set status changes if applicable:
+
+- The spec is in status "Coded". 
+- Features are in status "InProgress". 
+
+## Context
+
+Your task may be defined in a plan file.
+
+Read the plan and understand the tasks to complete. Then, implement the tasks in the plan step by step. 
+
+### Skills to use
+
+ - `coding-typescript`: Best practices for clean and maintainable code in Typescript.
+ - `coding-express-api`: Write API endpoints with Express following layered architecture patterns and best practices.
 
 
