@@ -89,7 +89,7 @@ cd backend && npm run test:dev   # watch mode
 - `GET /api/health` - Health check
 - `GET|POST /api/rockets`, `GET|PUT|DELETE /api/rockets/:id`
 - `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id` (planned)
-- `GET|POST /api/customers`, `GET /api/customers/:id` (planned)
+- `GET|POST /api/customers`, `GET /api/customers/:id`
 - `GET|POST /api/bookings`, `GET /api/bookings/:id` (planned, bills on create)
 
 ### Logging

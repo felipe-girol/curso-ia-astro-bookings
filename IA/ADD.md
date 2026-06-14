@@ -220,8 +220,8 @@ API surface (target):
 | GET/PUT/DELETE | `/api/rockets/:id` | Read/update/delete rocket | Implemented |
 | GET/POST | `/api/launches` | List/create launches | Planned |
 | GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch | Planned |
-| GET/POST | `/api/customers` | List/create customers | Planned |
-| GET | `/api/customers/:id` | Read customer | Planned |
+| GET/POST | `/api/customers` | List/create customers | Implemented |
+| GET | `/api/customers/:id` | Read customer | Implemented |
 | GET/POST | `/api/bookings` | List/create bookings (bills on create) | Planned |
 | GET | `/api/bookings/:id` | Read booking | Planned |
 
