@@ -64,7 +64,7 @@ Out of scope:
 ### FR7 Seat bookings
 - **Description**: Allow a customer to book one or more seats on a launch without exceeding available seats.
 - **Priority**: High
-- **Status**: NotStarted
+- **Status**: Implemented
 
 ### FR8 Billing via mock payment gateway
 - **Description**: Bill customers upon booking by processing payment through a mock gateway.
