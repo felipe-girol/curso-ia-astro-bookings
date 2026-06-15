@@ -59,7 +59,7 @@ Out of scope:
 ### FR6 Customers management
 - **Description**: Register and manage customers identified by email, with name and phone number.
 - **Priority**: Medium
-- **Status**: NotStarted
+- **Status**: Implemented
 
 ### FR7 Seat bookings
 - **Description**: Allow a customer to book one or more seats on a launch without exceeding available seats.

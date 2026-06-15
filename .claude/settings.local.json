@@ -22,7 +22,9 @@
       "mcp__github__list_pull_requests",
       "mcp__github__merge_pull_request",
       "mcp__github__add_issue_comment",
-      "Bash(git:*)"
+      "Bash(git:*)",
+      "Bash(npx playwright:*)",
+      "Skill(commit)"
     ]
   }
 }

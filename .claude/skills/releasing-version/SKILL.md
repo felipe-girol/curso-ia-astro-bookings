@@ -1,6 +1,8 @@
 ---
 name: releasing-version
-description: "Updates documentation, generates changelogs, and handles versioning. To be used for automating release tasks."
+description: >  
+  Updates documentation, generates changelogs, and handles versioning.
+  To be used for automating release tasks. 
 ---
 
 # Releasing Version Skill
@@ -18,13 +20,15 @@ Use terminal git commands as needed.
   - tech stack, 
   - setup/dev instructions, 
   - folder structure are accurate.
-- [ ] Other relevant project files (`package.json` ... ).
+- [ ] [PRD.md](../../../IA/PRD.md) and/or [specs](../../../IA/specs) current features status (If any).
+- [ ] [ADD.md](../../../IA/ADD.md) update/add architectural decisions (If any).
 
 ## Step 2: Generate Changelog
 
 - [ ] Commit all pending changes grouping them by type of change.
 - [ ] Use [Semantic Versioning (SemVer)](./sem-ver.md) principles.
-- [ ] [CHANGELOG.md](../../../CHANGELOG.md) : Add entries to based on commit history.
+- [ ] [CHANGELOG.md](/CHANGELOG.md) : Add entries to based on commit history.
+- [ ] Other relevant project files (`package.json` ... ).
 
 ## Step 3: Versioning
 
