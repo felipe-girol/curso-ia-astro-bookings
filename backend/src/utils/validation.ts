@@ -8,6 +8,28 @@ export function nonEmptyString(field: string): FieldValidator {
     typeof value === "string" && value.trim() !== "" ? null : `${field} must be a non-empty string`;
 }
 
+/** Builds a validator that requires a number strictly greater than zero. */
+export function positiveNumber(field: string): FieldValidator {
+  return (value: unknown): string | null =>
+    typeof value === "number" && Number.isFinite(value) && value > 0 ? null : `${field} must be a positive number`;
+}
+
+/** Builds a validator that requires an integer greater than or equal to one. */
+export function positiveInteger(field: string): FieldValidator {
+  return (value: unknown): string | null =>
+    typeof value === "number" && Number.isInteger(value) && value >= 1 ? null : `${field} must be an integer >= 1`;
+}
+
+/** Builds a validator that requires a valid ISO date string strictly after now. */
+export function futureDateString(field: string): FieldValidator {
+  return (value: unknown): string | null => {
+    if (typeof value !== "string") return `${field} must be a valid date in the future`;
+    const time = Date.parse(value);
+    if (Number.isNaN(time) || time <= Date.now()) return `${field} must be a valid date in the future`;
+    return null;
+  };
+}
+
 /**
  * Runs a set of field validators against a body and collects the error messages.
  * When `partial` is true, fields absent from the body are skipped (used for updates).
