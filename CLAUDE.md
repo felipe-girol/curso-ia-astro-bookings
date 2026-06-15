@@ -78,7 +78,7 @@ cd backend && npm run test:dev   # watch mode
 │       ├── middleware/        # request-logger.ts
 │       ├── utils/             # validation, error-handler, logger, payment-gateway
 │       ├── rockets/           # repository + router
-│       ├── launches/          # repository + service + router (planned)
+│       ├── launches/          # repository + service + validation + router
 │       ├── customers/         # repository + router
 │       └── bookings/          # repository + service + router (planned)
 └── frontend/                  # Vue 3 + Vite app
@@ -88,7 +88,7 @@ cd backend && npm run test:dev   # watch mode
 ### API Endpoints
 - `GET /api/health` - Health check
 - `GET|POST /api/rockets`, `GET|PUT|DELETE /api/rockets/:id`
-- `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id` (planned)
+- `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id`
 - `GET|POST /api/customers`, `GET /api/customers/:id`
 - `GET|POST /api/bookings`, `GET /api/bookings/:id` (planned, bills on create)
 
