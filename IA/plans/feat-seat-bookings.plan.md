@@ -89,16 +89,16 @@ Colocated fast tests for pure logic.
 
 ### Step 8: Add Playwright acceptance tests
 Cover every acceptance criterion in `tests/bookings.spec.ts`.
-- [ ] Helper to seed a rocket → launch → customer and return ids/price.
-- [ ] POST valid → 201 with `id`, computed `totalPrice` (= seats * pricePerSeat), `createdAt`, `paymentStatus`.
-- [ ] POST unknown `launchId` → 404; unknown `customerId` → 404.
-- [ ] POST `seats` not integer >= 1 → 400; POST `seats` exceeding remaining availability → 409.
-- [ ] GET list → array; GET with `?launchId=` → only that launch's bookings; GET unknown id → 404.
+- [x] Helper to seed a rocket → launch → customer and return ids/price.
+- [x] POST valid → 201 with `id`, computed `totalPrice` (= seats * pricePerSeat), `createdAt`, `paymentStatus`.
+- [x] POST unknown `launchId` → 404; unknown `customerId` → 404.
+- [x] POST `seats` not integer >= 1 → 400; POST `seats` exceeding remaining availability → 409.
+- [x] GET list → array; GET with `?launchId=` → only that launch's bookings; GET unknown id → 404.
 
 ### Step 9: Verify and finalize
 Build, run, and update project tracking.
 - [ ] `cd backend && npx tsc --noEmit` and `npm run build` pass; `npm run test` (Vitest) green.
-- [ ] Start backend, run `npm test` — bookings Playwright suite green.
+- [x] Start backend, run `npm test` — bookings Playwright suite green.
 - [ ] Update ADD + CLAUDE.md `/api/bookings` endpoint status Planned → Implemented.
 - [ ] Set spec status "Planned" → "Done"; keep feature "InProgress" while building.
 

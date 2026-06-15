@@ -54,12 +54,12 @@ In-memory `Map` storage following the established repository pattern. Bookings a
 
 ## Acceptance Criteria
 
-- [ ] WHEN a client sends a valid POST request with `launchId`, `customerId`, and `seats`, THE API SHALL create a booking and return it with a unique identifier, computed `totalPrice`, `createdAt`, and status 201.
-- [ ] WHEN THE API creates a booking, THE API SHALL set `totalPrice` to `seats` multiplied by the launch's `pricePerSeat`.
-- [ ] IF a client sends a POST request with a `launchId` that does not reference an existing launch, THEN THE API SHALL respond with a 404 not-found error.
-- [ ] IF a client sends a POST request with a `customerId` that does not reference an existing customer, THEN THE API SHALL respond with a 404 not-found error.
-- [ ] IF a client sends a POST request with `seats` that is not an integer greater than or equal to 1, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] IF a client sends a POST request with `seats` exceeding the launch's remaining available seats, THEN THE API SHALL reject the request with a 409 conflict error indicating insufficient availability.
-- [ ] WHEN a client sends a GET request to `/api/bookings`, THE API SHALL return a list of all bookings.
-- [ ] WHERE a `launchId` query parameter is provided on `GET /api/bookings`, THE API SHALL return only the bookings of that launch.
-- [ ] IF a client sends a GET request with a non-existent booking identifier, THEN THE API SHALL respond with a 404 not-found error.
+- [x] WHEN a client sends a valid POST request with `launchId`, `customerId`, and `seats`, THE API SHALL create a booking and return it with a unique identifier, computed `totalPrice`, `createdAt`, and status 201.
+- [x] WHEN THE API creates a booking, THE API SHALL set `totalPrice` to `seats` multiplied by the launch's `pricePerSeat`.
+- [x] IF a client sends a POST request with a `launchId` that does not reference an existing launch, THEN THE API SHALL respond with a 404 not-found error.
+- [x] IF a client sends a POST request with a `customerId` that does not reference an existing customer, THEN THE API SHALL respond with a 404 not-found error.
+- [x] IF a client sends a POST request with `seats` that is not an integer greater than or equal to 1, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] IF a client sends a POST request with `seats` exceeding the launch's remaining available seats, THEN THE API SHALL reject the request with a 409 conflict error indicating insufficient availability.
+- [x] WHEN a client sends a GET request to `/api/bookings`, THE API SHALL return a list of all bookings.
+- [x] WHERE a `launchId` query parameter is provided on `GET /api/bookings`, THE API SHALL return only the bookings of that launch.
+- [x] IF a client sends a GET request with a non-existent booking identifier, THEN THE API SHALL respond with a 404 not-found error.
