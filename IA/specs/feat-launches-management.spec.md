@@ -50,12 +50,12 @@ In-memory `Map` storage, consistent with the existing rockets repository pattern
 
 ## Acceptance Criteria
 
-- [ ] WHEN a client sends a valid POST request with `rocketId`, `mission`, `date`, `pricePerSeat`, `minPassengers`, and `seatsOffered`, THE API SHALL create a new launch and return it with a unique identifier and status 201.
-- [ ] IF a client sends a POST request with a `rocketId` that does not reference an existing rocket, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] IF a client sends a POST request with `seatsOffered` exceeding the referenced rocket's `capacity`, THEN THE API SHALL reject the request with a 400 validation error indicating the capacity constraint.
-- [ ] IF a client sends a POST request with `minPassengers` greater than `seatsOffered`, or a non-future `date`, or an empty `mission`, or a non-positive `pricePerSeat`, THEN THE API SHALL reject the request with a 400 validation error.
-- [ ] WHEN a client sends a GET request to `/api/launches`, THE API SHALL return a list of all registered launches.
-- [ ] WHEN a client sends a GET request with an existing launch identifier, THE API SHALL return the details of that launch.
-- [ ] IF a client sends a GET, PUT, or DELETE request with a non-existent launch identifier, THEN THE API SHALL respond with a 404 not-found error.
-- [ ] WHEN a client sends a PUT request with valid updated data for an existing launch, THE API SHALL apply the same validation rules, update the launch, and return the modified resource.
-- [ ] WHEN a client sends a DELETE request with an existing launch identifier, THE API SHALL remove the launch and respond with status 204.
+- [x] WHEN a client sends a valid POST request with `rocketId`, `mission`, `date`, `pricePerSeat`, `minPassengers`, and `seatsOffered`, THE API SHALL create a new launch and return it with a unique identifier and status 201.
+- [x] IF a client sends a POST request with a `rocketId` that does not reference an existing rocket, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] IF a client sends a POST request with `seatsOffered` exceeding the referenced rocket's `capacity`, THEN THE API SHALL reject the request with a 400 validation error indicating the capacity constraint.
+- [x] IF a client sends a POST request with `minPassengers` greater than `seatsOffered`, or a non-future `date`, or an empty `mission`, or a non-positive `pricePerSeat`, THEN THE API SHALL reject the request with a 400 validation error.
+- [x] WHEN a client sends a GET request to `/api/launches`, THE API SHALL return a list of all registered launches.
+- [x] WHEN a client sends a GET request with an existing launch identifier, THE API SHALL return the details of that launch.
+- [x] IF a client sends a GET, PUT, or DELETE request with a non-existent launch identifier, THEN THE API SHALL respond with a 404 not-found error.
+- [x] WHEN a client sends a PUT request with valid updated data for an existing launch, THE API SHALL apply the same validation rules, update the launch, and return the modified resource.
+- [x] WHEN a client sends a DELETE request with an existing launch identifier, THE API SHALL remove the launch and respond with status 204.

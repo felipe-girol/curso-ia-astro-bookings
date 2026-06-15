@@ -88,16 +88,16 @@ Colocated fast tests for pure logic.
 
 ### Step 9: Add Playwright acceptance tests
 Cover every acceptance criterion in `tests/launches.spec.ts`.
-- [ ] POST valid → 201 with `id` and echoed fields (seed a rocket first via `/api/rockets`).
-- [ ] POST unknown `rocketId` → 400; `seatsOffered > capacity` → 400.
-- [ ] POST `minPassengers > seatsOffered` / past `date` / empty `mission` / non-positive `pricePerSeat` → 400.
-- [ ] GET list → array; GET `/:id` → details; GET/PUT/DELETE unknown id → 404.
-- [ ] PUT valid → 200 modified; DELETE existing → 204.
+- [x] POST valid → 201 with `id` and echoed fields (seed a rocket first via `/api/rockets`).
+- [x] POST unknown `rocketId` → 400; `seatsOffered > capacity` → 400.
+- [x] POST `minPassengers > seatsOffered` / past `date` / empty `mission` / non-positive `pricePerSeat` → 400.
+- [x] GET list → array; GET `/:id` → details; GET/PUT/DELETE unknown id → 404.
+- [x] PUT valid → 200 modified; DELETE existing → 204.
 
 ### Step 10: Verify and finalize
 Build, run, and update project tracking.
-- [ ] `cd backend && npx tsc --noEmit` and `npm run build` pass; `npm run test` (Vitest) green.
-- [ ] Start backend, run `npm test` — launches Playwright suite green.
+- [x] `cd backend && npx tsc --noEmit` and `npm run build` pass; `npm run test` (Vitest) green.
+- [x] Start backend, run `npm test` — launches Playwright suite green.
 - [ ] Update ADD + CLAUDE.md launch endpoint status Planned → Implemented.
 - [ ] Set spec status "Planned" → "Done"; keep feature "InProgress" while building.
 
