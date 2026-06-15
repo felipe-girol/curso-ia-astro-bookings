@@ -15,7 +15,7 @@ export type LaunchResult = CreateLaunchResult | { status: "not-found" };
  */
 function checkRocketRules(rocketId: string, seatsOffered: number): string[] {
   const rocket = rocketsRepository.findById(rocketId);
-  if (!rocket) return [`rocketId must reference an existing rocket`];
+  if (!rocket) return ["rocketId must reference an existing rocket"];
   if (seatsOffered > rocket.capacity) {
     return [`seatsOffered must not exceed the rocket capacity of ${rocket.capacity}`];
   }

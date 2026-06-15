@@ -1,6 +1,3 @@
-export const MIN_PASSENGERS = 1;
-export const MIN_SEATS = 1;
-
 export type Launch = {
   id: string;
   rocketId: string;
