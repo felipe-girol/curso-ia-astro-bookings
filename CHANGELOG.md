@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.3.0] - 2026-06-15
+
+### Added
+- Launches management module (FR4, FR5) with full CRUD: `GET/POST /api/launches` and `GET/PUT/DELETE /api/launches/:id`
+- Launch model `{ id, rocketId, mission, date, pricePerSeat, minPassengers, seatsOffered }` bound to an existing rocket
+- Service layer enforcing cross-entity rules: `rocketId` must exist and `seatsOffered` must not exceed the rocket's capacity (both returning `400`)
+- Validation for non-empty `mission`, positive `pricePerSeat`, integer `minPassengers`/`seatsOffered` >= 1, future `date`, and `minPassengers <= seatsOffered`
+- Shared validation primitives `positiveNumber`, `positiveInteger`, and `futureDateString` (entity-agnostic, reusable by bookings)
+- Playwright E2E tests covering all launches acceptance criteria
+- Vitest unit tests for the launches repository, service, and validation
+
 ## [1.2.0] - 2026-06-15
 
 ### Added

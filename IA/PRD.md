@@ -49,12 +49,12 @@ Out of scope:
 ### FR4 Launches management
 - **Description**: Provide CRUD over launches under `/api/launches`, each tied to a rocket with date, mission, price per seat, minimum passengers, and seats offered.
 - **Priority**: High
-- **Status**: NotStarted
+- **Status**: Implemented
 
 ### FR5 Launch validation rules
 - **Description**: Validate that `rocketId` exists, `seats` does not exceed rocket capacity, `minPassengers` does not exceed `seats`, `date` is a valid future date, `mission` is non-empty, and `pricePerSeat` is positive.
 - **Priority**: High
-- **Status**: NotStarted
+- **Status**: Implemented
 
 ### FR6 Customers management
 - **Description**: Register and manage customers identified by email, with name and phone number.

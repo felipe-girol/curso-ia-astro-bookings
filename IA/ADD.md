@@ -128,7 +128,7 @@ Rocket 1───* Launch *───* Booking *───1 Customer
 ```
 
 - **Rocket** — `{ id, name, range, capacity }`. `range ∈ {suborbital, orbital, moon, mars}`, `capacity ∈ [1,10]`. (Implemented.)
-- **Launch** — `{ id, rocketId, mission, date, pricePerSeat, minPassengers, seatsOffered }`. Bound to an existing rocket; `seatsOffered ≤ rocket.capacity`, `minPassengers ≤ seatsOffered`, future `date`, non-empty `mission`, positive `pricePerSeat`.
+- **Launch** — `{ id, rocketId, mission, date, pricePerSeat, minPassengers, seatsOffered }`. Bound to an existing rocket; `seatsOffered ≤ rocket.capacity`, `minPassengers ≤ seatsOffered`, future `date`, non-empty `mission`, positive `pricePerSeat`. (Implemented.)
 - **Customer** — `{ id, email, name, phone }`. Identified/looked up by unique `email`.
 - **Booking** — `{ id, launchId, customerId, seats, totalPrice, paymentStatus, createdAt }`. `seats ≤` remaining available seats on the launch.
 
@@ -172,7 +172,7 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 ├── tests/
 │   ├── smoke.spec.ts
 │   ├── rockets.spec.ts
-│   ├── launches.spec.ts       # (new)
+│   ├── launches.spec.ts
 │   ├── customers.spec.ts      # (new)
 │   └── bookings.spec.ts       # (new)
 ├── backend/
@@ -181,7 +181,7 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 │       ├── routes/index.ts    # Root router (/api) + health
 │       ├── types/
 │       │   ├── rockets.type.ts
-│       │   ├── launches.type.ts    # (new)
+│       │   ├── launches.type.ts
 │       │   ├── customers.type.ts   # (new)
 │       │   └── bookings.type.ts    # (new)
 │       ├── middleware/request-logger.ts
@@ -193,9 +193,10 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 │       ├── rockets/
 │       │   ├── rockets.repository.ts
 │       │   └── rockets.router.ts
-│       ├── launches/               # (new)
+│       ├── launches/
 │       │   ├── launches.repository.ts
 │       │   ├── launches.service.ts
+│       │   ├── launches.validation.ts
 │       │   └── launches.router.ts
 │       ├── customers/              # (new)
 │       │   ├── customers.repository.ts
@@ -218,8 +219,8 @@ API surface (target):
 | GET | `/api/health` | Health check | Implemented |
 | GET/POST | `/api/rockets` | List/create rockets | Implemented |
 | GET/PUT/DELETE | `/api/rockets/:id` | Read/update/delete rocket | Implemented |
-| GET/POST | `/api/launches` | List/create launches | Planned |
-| GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch | Planned |
+| GET/POST | `/api/launches` | List/create launches | Implemented |
+| GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch | Implemented |
 | GET/POST | `/api/customers` | List/create customers | Implemented |
 | GET | `/api/customers/:id` | Read customer | Implemented |
 | GET/POST | `/api/bookings` | List/create bookings (bills on create) | Planned |
