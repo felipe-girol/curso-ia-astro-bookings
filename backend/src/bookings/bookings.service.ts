@@ -1,6 +1,5 @@
-import type { Booking, CreateBookingDto } from "../types/bookings.type.js";
+import { type Booking, type CreateBookingDto, DEFAULT_PAYMENT_STATUS } from "../types/bookings.type.js";
 import type { Launch } from "../types/launches.type.js";
-import { DEFAULT_PAYMENT_STATUS } from "../types/bookings.type.js";
 import * as customersRepository from "../customers/customers.repository.js";
 import * as launchesRepository from "../launches/launches.repository.js";
 import { logInfo } from "../utils/logger.js";
@@ -40,9 +39,7 @@ export function createBooking(dto: CreateBookingDto): CreateBookingResult {
   }
 
   const booking = repository.create({
-    launchId: dto.launchId,
-    customerId: dto.customerId,
-    seats: dto.seats,
+    ...dto,
     totalPrice: dto.seats * launch.pricePerSeat,
     paymentStatus: DEFAULT_PAYMENT_STATUS,
     createdAt: new Date().toISOString(),
