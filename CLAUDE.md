@@ -79,7 +79,7 @@ cd backend && npm run test:dev   # watch mode
 │       ├── utils/             # validation, error-handler, logger, payment-gateway
 │       ├── rockets/           # repository + router
 │       ├── launches/          # repository + service + router (planned)
-│       ├── customers/         # repository + router (planned)
+│       ├── customers/         # repository + router
 │       └── bookings/          # repository + service + router (planned)
 └── frontend/                  # Vue 3 + Vite app
     └── src/                   # main.ts, App.vue, components/
