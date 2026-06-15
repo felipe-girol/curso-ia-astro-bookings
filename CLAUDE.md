@@ -80,7 +80,7 @@ cd backend && npm run test:dev   # watch mode
 │       ├── rockets/           # repository + router
 │       ├── launches/          # repository + service + validation + router
 │       ├── customers/         # repository + router
-│       └── bookings/          # repository + service + router (planned)
+│       └── bookings/          # repository + service + validation + router
 └── frontend/                  # Vue 3 + Vite app
     └── src/                   # main.ts, App.vue, components/
 ```
@@ -90,7 +90,7 @@ cd backend && npm run test:dev   # watch mode
 - `GET|POST /api/rockets`, `GET|PUT|DELETE /api/rockets/:id`
 - `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id`
 - `GET|POST /api/customers`, `GET /api/customers/:id`
-- `GET|POST /api/bookings`, `GET /api/bookings/:id` (planned, bills on create)
+- `GET|POST /api/bookings`, `GET /api/bookings/:id` (implemented; billing via FR8 pending)
 
 ### Logging
 - Format: `[TIMESTAMP] [LEVEL] [CONTEXT] message`
