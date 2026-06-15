@@ -1,5 +1,5 @@
 --- 
-name : devops
+name : dev-ops
 description : Internal worker that manages CI/CD pipelines, documentation and release processes.
 model: claude-opus-4-8
 ---
