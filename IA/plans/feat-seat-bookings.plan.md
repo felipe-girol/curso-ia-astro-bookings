@@ -99,8 +99,8 @@ Cover every acceptance criterion in `tests/bookings.spec.ts`.
 Build, run, and update project tracking.
 - [ ] `cd backend && npx tsc --noEmit` and `npm run build` pass; `npm run test` (Vitest) green.
 - [x] Start backend, run `npm test` — bookings Playwright suite green.
-- [ ] Update ADD + CLAUDE.md `/api/bookings` endpoint status Planned → Implemented.
-- [ ] Set spec status "Planned" → "Done"; keep feature "InProgress" while building.
+- [x] Update ADD + CLAUDE.md `/api/bookings` endpoint status Planned → Implemented.
+- [x] Set spec status "Planned" → "Released"; feature Implemented.
 
 ## Acceptance Criteria coverage
 

@@ -223,8 +223,8 @@ API surface (target):
 | GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch | Implemented |
 | GET/POST | `/api/customers` | List/create customers | Implemented |
 | GET | `/api/customers/:id` | Read customer | Implemented |
-| GET/POST | `/api/bookings` | List/create bookings (bills on create) | Planned |
-| GET | `/api/bookings/:id` | Read booking | Planned |
+| GET/POST | `/api/bookings` | List/create bookings (`?launchId=` filter) | Implemented |
+| GET | `/api/bookings/:id` | Read booking | Implemented |
 
 ## Architecture Decisions Record (ADR)
 

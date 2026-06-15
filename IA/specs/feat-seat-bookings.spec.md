@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR7.
 - **Issue**: _to be created_
-- **Status**: Coded
+- **Status**: Released
 
 ## Problem Description
 
