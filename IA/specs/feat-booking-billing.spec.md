@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../../IA/PRD.md) FR8 (depends on FR7, FR4, FR6).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Coded
 
 ## Problem Description
 
