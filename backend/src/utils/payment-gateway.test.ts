@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { charge } from "./payment-gateway.js";
 
 describe("payment-gateway charge", () => {
@@ -34,5 +34,29 @@ describe("payment-gateway charge", () => {
     const result = charge(-50);
 
     expect(result.outcome).toBe("failed");
+  });
+
+  describe("logging (AC: log amount and resulting outcome)", () => {
+    afterEach(() => vi.restoreAllMocks());
+
+    it("logs the amount and the paid outcome on a successful charge", () => {
+      const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+
+      charge(2500);
+
+      const logged = logSpy.mock.calls.map((args) => String(args[0])).join("\n");
+      expect(logged).toContain("2500");
+      expect(logged).toMatch(/paid/i);
+    });
+
+    it("logs the amount and the failed outcome on a declined charge", () => {
+      const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+
+      charge(0);
+
+      const logged = warnSpy.mock.calls.map((args) => String(args[0])).join("\n");
+      expect(logged).toContain("0");
+      expect(logged).toMatch(/failed/i);
+    });
   });
 });

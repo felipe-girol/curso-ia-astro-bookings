@@ -90,6 +90,47 @@ describe("bookings.service createBooking", () => {
     expect(result.status).toBe("conflict");
   });
 
+  it("does not attempt the charge when the launch does not exist", () => {
+    const customer = seedCustomer();
+    vi.mocked(charge).mockClear();
+
+    const result = createBooking({ launchId: "missing-launch", customerId: customer.id, seats: 1 });
+
+    expect(result.status).toBe("not-found");
+    expect(charge).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt the charge when the customer does not exist", () => {
+    const launch = seedLaunch();
+    vi.mocked(charge).mockClear();
+
+    const result = createBooking({ launchId: launch.id, customerId: "missing-customer", seats: 1 });
+
+    expect(result.status).toBe("not-found");
+    expect(charge).not.toHaveBeenCalled();
+  });
+
+  it("does not attempt the charge when seats exceed availability", () => {
+    const launch = seedLaunch(2);
+    const customer = seedCustomer();
+    vi.mocked(charge).mockClear();
+
+    const result = createBooking({ launchId: launch.id, customerId: customer.id, seats: 5 });
+
+    expect(result.status).toBe("conflict");
+    expect(charge).not.toHaveBeenCalled();
+  });
+
+  it("charges the launch price multiplied by seats only after checks pass", () => {
+    const launch = seedLaunch(10, 1200);
+    const customer = seedCustomer();
+    vi.mocked(charge).mockClear();
+
+    createBooking({ launchId: launch.id, customerId: customer.id, seats: 4 });
+
+    expect(charge).toHaveBeenCalledWith(4800);
+  });
+
   it("does not persist the booking when the gateway declines the charge", () => {
     const launch = seedLaunch(10, 1000);
     const customer = seedCustomer();
