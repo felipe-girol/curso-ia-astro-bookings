@@ -69,7 +69,7 @@ Out of scope:
 ### FR8 Billing via mock payment gateway
 - **Description**: Bill customers upon booking by processing payment through a mock gateway.
 - **Priority**: Medium
-- **Status**: NotStarted
+- **Status**: Implemented
 
 ### FR9 Customer-facing frontend
 - **Description**: Provide a Vue 3 frontend for browsing launches and managing bookings.
