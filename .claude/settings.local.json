@@ -29,7 +29,10 @@
       "Bash(echo:*)",
       "Bash(bash /d/FELIPE/IA/curso-ia-astro-bookings/.claude/skills/merging-default/merge.sh 2>&1)",
       "WebFetch(domain:coreui.io)",
-      "WebSearch"
+      "WebSearch",
+      "Bash(npm run:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(gh issue:*)"
     ]
   }
 }

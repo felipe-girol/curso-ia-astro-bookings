@@ -1,5 +1,22 @@
 # Changelog
 
+## [1.6.0] - 2026-06-28
+
+### Added
+- Frontend application shell (FR9): Vue 3 + Vite SPA foundation replacing the default `HelloWorld` scaffold
+- Client-side routing with `vue-router` (HTML5 history) — `/` (Home), `/agency`, `/customer`, and a catch-all not-found route, all rendered inside a shared `AppLayout`
+- Shared layout with top-level navigation (`AppNav`) between the agency and customer areas; navigation routes client-side without a full page reload
+- Service `HealthIndicator` that calls `GET /api/health` on mount and shows reachable/unreachable, with an `AbortController` timeout guaranteeing the unreachable state on a hung backend
+- Single typed API client (`services/api-client.ts`) on the `/api` base path exposing a generic `request<T>()` returning a discriminated `ApiResult<T>` and a typed `getHealth()`
+- Reusable async composable (`composables/use-async.ts`) with `loading`/`error`/`data` + `retry()`, and presentational `LoadingState`, `EmptyState`, and `ErrorState` (retry affordance) components
+- Frontend types `ApiResult<T>`/`ApiError` and `HealthStatus` mirroring backend DTOs (API remains the single source of truth)
+- Vite dev-server proxy forwarding `/api` → `http://localhost:3000` and `VITE_API_BASE_URL` env default (`/api`)
+- Vitest setup for the frontend with unit tests for the API client and async composable
+- Playwright shell E2E suite (`tests/frontend-shell.spec.ts`) covering every acceptance criterion (layout/nav, client-side routing, health reachable/unreachable, `/api` base, loading/empty states, failure + retry recovery, not-found)
+
+### Removed
+- Default Vite scaffold artifacts: `components/HelloWorld.vue`, `assets/vue.svg`, `assets/vite.svg`, and unused `assets/hero.png` / `public/icons.svg`
+
 ## [1.5.0] - 2026-06-27
 
 ### Added

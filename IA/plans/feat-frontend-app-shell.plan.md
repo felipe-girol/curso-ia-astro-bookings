@@ -115,7 +115,7 @@ Drop the default Vite artifacts the shell replaces.
 Typecheck, build, and confirm the acceptance criteria end-to-end.
 - [ ] `cd frontend && npm run build` (`vue-tsc -b && vite build`) passes with no type errors.
 - [ ] Manual check with backend running (`cd backend && npm run dev`) + `npm run dev`: nav routes without reload; indicator shows reachable, then unreachable when backend is stopped; loading/empty/error + retry render; unknown path shows NotFound inside the layout.
-- [ ] (Optional) Add a Playwright shell smoke (`tests/frontend-shell.spec.ts`) asserting layout/nav render and unknown paths hit NotFound, running against the Vite dev server.
+- [x] Add a Playwright shell E2E suite (`tests/frontend-shell.spec.ts`) covering all acceptance criteria (layout/nav, client-side routing, health reachable/unreachable, `/api` base, loading/empty states, failure+recovery, NotFound) against the Vite dev server; refresh `tests/smoke.spec.ts` for the new shell.
 - [ ] Update PRD FR9 status `NotStarted → InProgress`; set this spec status `Planned → InProgress` while building (Done on completion).
 
 ## Acceptance Criteria coverage
