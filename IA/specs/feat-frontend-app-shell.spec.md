@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR9. Umbrella: [Frontend Staged Delivery](./feat-frontend-staged-delivery.spec.md) Stage 1.
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Coded
 
 ## Problem Description
 
