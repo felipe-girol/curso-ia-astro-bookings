@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR9. Umbrella: [Frontend Staged Delivery](./feat-frontend-staged-delivery.spec.md) Stage 1.
 - **Issue**: _to be created_
-- **Status**: Coded
+- **Status**: Tested
 
 ## Problem Description
 
@@ -43,12 +43,12 @@ This spec covers only the shell (FR9). The backend API and its rules are already
 
 ## Acceptance Criteria
 
-- [ ] WHERE the application is loaded, THE Frontend SHALL render a shared layout containing navigation to the agency area and the customer area.
-- [ ] WHEN a user selects a navigation link, THE Frontend SHALL route client-side to the target area without a full page reload.
-- [ ] WHEN the application starts, THE Frontend SHALL request `GET /api/health` and display a service status indicator reflecting the response.
-- [ ] IF the `GET /api/health` request fails or times out, THEN THE Frontend SHALL display the indicator in an unreachable state.
-- [ ] THE Frontend SHALL expose a single typed API client configured with the `/api` base path that all data access uses.
-- [ ] WHILE an API request is in progress, THE Frontend SHALL display a reusable loading state.
-- [ ] IF an API request fails, THEN THE Frontend SHALL display a reusable error state with a retry affordance.
-- [ ] WHERE a screen has no data to show, THE Frontend SHALL display a reusable empty state.
-- [ ] WHEN a user navigates to an unknown path, THE Frontend SHALL display a not-found route within the shared layout.
+- [x] WHERE the application is loaded, THE Frontend SHALL render a shared layout containing navigation to the agency area and the customer area.
+- [x] WHEN a user selects a navigation link, THE Frontend SHALL route client-side to the target area without a full page reload.
+- [x] WHEN the application starts, THE Frontend SHALL request `GET /api/health` and display a service status indicator reflecting the response.
+- [x] IF the `GET /api/health` request fails or times out, THEN THE Frontend SHALL display the indicator in an unreachable state.
+- [x] THE Frontend SHALL expose a single typed API client configured with the `/api` base path that all data access uses.
+- [x] WHILE an API request is in progress, THE Frontend SHALL display a reusable loading state.
+- [x] IF an API request fails, THEN THE Frontend SHALL display a reusable error state with a retry affordance.
+- [x] WHERE a screen has no data to show, THE Frontend SHALL display a reusable empty state.
+- [x] WHEN a user navigates to an unknown path, THE Frontend SHALL display a not-found route within the shared layout.
