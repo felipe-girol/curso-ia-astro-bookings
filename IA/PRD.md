@@ -74,7 +74,7 @@ Out of scope:
 ### FR9 Frontend application shell and API integration
 - **Description**: Provide the Vue 3 + Vite application foundation: client-side routing, a shared layout with navigation between the agency and customer areas, a typed API client targeting `/api`, a service health indicator sourced from `GET /api/health`, and consistent loading, empty, and error states reused across screens.
 - **Priority**: Low
-- **Status**: InProgress
+- **Status**: Implemented
 
 ### FR10 Rocket management UI
 - **Description**: Provide agency screens to list, create, edit, and delete rockets via `/api/rockets`, surfacing name, range, and capacity validation feedback (builds on FR1, FR2).

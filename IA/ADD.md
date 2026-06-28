@@ -205,11 +205,19 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 │           ├── bookings.repository.ts
 │           ├── bookings.service.ts
 │           └── bookings.router.ts
-└── frontend/                  # Vue 3 + Vite SPA
+└── frontend/                  # Vue 3 + Vite SPA (app shell, FR9)
+    ├── .env                   # VITE_API_BASE_URL (default /api)
+    ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
-        ├── main.ts
-        ├── App.vue
-        └── components/
+        ├── main.ts            # bootstrap + router registration
+        ├── App.vue            # <AppLayout> + <RouterView>
+        ├── router/index.ts    # routes + catch-all (not-found)
+        ├── types/             # api.type.ts (ApiResult<T>/ApiError), health.type.ts
+        ├── services/api-client.ts  # typed request<T>() + getHealth()
+        ├── composables/use-async.ts  # loading/error/data + retry
+        ├── components/        # AppLayout, AppNav, HealthIndicator,
+        │                      #   LoadingState, EmptyState, ErrorState
+        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView
 ```
 
 API surface (target):
@@ -269,3 +277,9 @@ API surface (target):
 - **Status**: Accepted
 - **Context**: The backend had no unit tests — only Playwright suites that require a live server, making pure-logic checks slow to run. Vitest is ESM-native, runs TypeScript via esbuild with no extra config under the existing `tsx`/NodeNext setup, and offers a Jest-compatible API.
 - **Consequences**: Repositories, validators, utils, and services gain quick feedback via `npm run test:dev` (watch) / `npm run test` (CI) from `backend/`. Two layers of testing must be maintained, but each covers a distinct concern (unit logic vs. end-to-end behavior). NodeNext `.js` import extensions remain valid in test files.
+
+### ADR 8: Frontend application shell — routing, single typed API client, shared async states
+- **Decision**: Build the Vue SPA on `vue-router` (v4, HTML5 history) with one shared `AppLayout` wrapping all routes (including the catch-all not-found). Centralize all HTTP access in a single typed `services/api-client.ts` on the `/api` base that returns a discriminated `ApiResult<T>` (`{ ok: true; data } | { ok: false; error }`) instead of throwing, and standardize loading/empty/error UX via a `use-async` composable plus `LoadingState`/`EmptyState`/`ErrorState` components.
+- **Status**: Accepted
+- **Context**: The frontend was the default Vite `HelloWorld` scaffold. Every later stage (FR10–FR13: rockets, launches, catalog, bookings UIs) needs the same foundation — navigation, data fetching, and feedback states. Without a shared shell each stage would re-invent these, producing inconsistent UX and duplicated code.
+- **Consequences**: Feature screens compose the shared client and state primitives, satisfying the loading/error-with-retry/empty criteria once. The client targets the relative `/api` base (spec-mandated) resolved via a Vite dev proxy to `http://localhost:3000`, so dev needs no CORS and prod can serve the SPA behind the same origin. The API stays the single source of truth — frontend types only mirror DTOs and no business rules are duplicated. A fetch `AbortController` timeout guarantees the health indicator's unreachable state on a hung backend. CoreUI styling and a global store (Pinia) are deferred until a feature stage needs them.
