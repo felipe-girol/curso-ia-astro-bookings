@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR10 (builds on FR1, FR2). Umbrella: [Frontend Staged Delivery](./feat-frontend-staged-delivery.spec.md).
 - **Issue**: _to be created_
-- **Status**: Coded
+- **Status**: Tested
 
 ## Problem Description
 
@@ -44,12 +44,12 @@ This spec covers only the rocket management UI (FR10). The backend API, its vali
 
 ## Acceptance Criteria
 
-- [ ] WHEN the rockets screen loads, THE Frontend SHALL request `GET /api/rockets` and display each rocket's name, range, and capacity.
-- [ ] WHILE the rockets request is in progress, THE Frontend SHALL display the shared loading state.
-- [ ] WHERE no rockets exist, THE Frontend SHALL display the shared empty state.
-- [ ] WHEN an agency owner submits the create form with valid name, range, and capacity, THE Frontend SHALL send `POST /api/rockets` and add the created rocket to the list.
-- [ ] WHEN an agency owner submits the edit form for an existing rocket, THE Frontend SHALL send `PUT /api/rockets/:id` and reflect the updated values in the list.
-- [ ] WHEN an agency owner confirms deletion of a rocket, THE Frontend SHALL send `DELETE /api/rockets/:id` and remove the rocket from the list.
-- [ ] IF the form input violates name, range, or capacity rules, THEN THE Frontend SHALL display validation feedback next to the offending field and SHALL NOT send the request.
-- [ ] IF the API returns a validation or error response, THEN THE Frontend SHALL display the shared error state with a retry affordance and SHALL preserve the entered form values.
-- [ ] THE Frontend SHALL restrict the range input to the values `suborbital`, `orbital`, `moon`, and `mars`.
+- [x] WHEN the rockets screen loads, THE Frontend SHALL request `GET /api/rockets` and display each rocket's name, range, and capacity.
+- [x] WHILE the rockets request is in progress, THE Frontend SHALL display the shared loading state.
+- [x] WHERE no rockets exist, THE Frontend SHALL display the shared empty state.
+- [x] WHEN an agency owner submits the create form with valid name, range, and capacity, THE Frontend SHALL send `POST /api/rockets` and add the created rocket to the list.
+- [x] WHEN an agency owner submits the edit form for an existing rocket, THE Frontend SHALL send `PUT /api/rockets/:id` and reflect the updated values in the list.
+- [x] WHEN an agency owner confirms deletion of a rocket, THE Frontend SHALL send `DELETE /api/rockets/:id` and remove the rocket from the list.
+- [x] IF the form input violates name, range, or capacity rules, THEN THE Frontend SHALL display validation feedback next to the offending field and SHALL NOT send the request.
+- [x] IF the API returns a validation or error response, THEN THE Frontend SHALL display the shared error state with a retry affordance and SHALL preserve the entered form values.
+- [x] THE Frontend SHALL restrict the range input to the values `suborbital`, `orbital`, `moon`, and `mars`.
