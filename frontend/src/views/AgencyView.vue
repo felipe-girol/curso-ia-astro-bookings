@@ -1,11 +1,45 @@
 <script setup lang="ts">
-import EmptyState from '../components/EmptyState.vue'
+import { RouterLink } from 'vue-router'
 </script>
 
 <template>
   <section aria-labelledby="agency-h">
     <h1 id="agency-h">Agency</h1>
-    <p>Rocket and launch management arrives in an upcoming stage.</p>
-    <EmptyState message="No rockets or launches to manage yet." />
+    <p>Manage your rocket fleet and, soon, your launches.</p>
+    <ul class="agency-links">
+      <li>
+        <RouterLink to="/agency/rockets" class="agency-link">
+          Manage rockets
+        </RouterLink>
+      </li>
+    </ul>
   </section>
 </template>
+
+<style scoped>
+.agency-links {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.agency-link {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  background: var(--accent-bg);
+  text-decoration: none;
+  transition: box-shadow 0.2s;
+}
+
+.agency-link:hover {
+  box-shadow: var(--shadow);
+}
+
+.agency-link:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+</style>
