@@ -85,18 +85,19 @@ cd frontend && npm run test:dev  # watch mode
 │       ├── launches/          # repository + service + validation + router
 │       ├── customers/         # repository + router
 │       └── bookings/          # repository + service + validation + router
-└── frontend/                  # Vue 3 + Vite SPA (app shell, FR9)
+└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket management UI FR10)
     ├── .env                   # VITE_API_BASE_URL (default /api)
     ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
         ├── main.ts            # bootstrap + router registration
         ├── App.vue            # <AppLayout> + <RouterView>
-        ├── router/index.ts    # routes + catch-all (not-found)
-        ├── types/             # api.type.ts, health.type.ts (mirror backend DTOs)
-        ├── services/          # api-client.ts (typed request<T>() + getHealth())
+        ├── router/index.ts    # routes + catch-all (not-found); /agency/rockets lazy-loaded
+        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts (mirror backend DTOs)
+        ├── services/          # api-client.ts (typed request<T>() + getHealth()), rockets-api.ts
+        ├── validation/        # rocket-form.ts (pure validateRocketForm mirroring backend rules)
         ├── composables/       # use-async.ts (loading/error/data + retry)
-        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState
-        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView
+        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState, RocketForm, RocketList, ConfirmDialog
+        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView, RocketsView
 ```
 
 ### Frontend conventions

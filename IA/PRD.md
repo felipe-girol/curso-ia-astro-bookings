@@ -79,7 +79,7 @@ Out of scope:
 ### FR10 Rocket management UI
 - **Description**: Provide agency screens to list, create, edit, and delete rockets via `/api/rockets`, surfacing name, range, and capacity validation feedback (builds on FR1, FR2).
 - **Priority**: Low
-- **Status**: InProgress
+- **Status**: Implemented
 
 ### FR11 Launch management UI
 - **Description**: Provide agency screens to list, create, edit, and delete launches via `/api/launches`, including rocket selection and validation feedback for mission, date, price per seat, minimum passengers, and seats offered (builds on FR4, FR5).

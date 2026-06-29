@@ -1,5 +1,23 @@
 # Changelog
 
+## [1.7.0] - 2026-06-29
+
+### Added
+- Rocket management UI (FR10): Agency screen to list, create, edit, and delete rockets via `/api/rockets`, building on the app shell (FR9) and the rocket CRUD API (FR1/FR2)
+- `RocketsView` orchestrating the screen through the shared `use-async` composable: `LoadingState` while loading, `ErrorState` with retry on failure, `EmptyState` when no rockets exist, else the rocket list
+- `RocketList` presentational table of `name`, `range`, and `capacity` with per-row edit and delete actions
+- Reusable `RocketForm` serving both create (empty) and edit (pre-filled) with inline per-field validation feedback and preserved input on submit failure
+- `ConfirmDialog` confirmation step before issuing `DELETE /api/rockets/:id`
+- Typed `services/rockets-api.ts` (`listRockets`/`createRocket`/`updateRocket`/`deleteRocket`) returning the discriminated `ApiResult<T>` through the single `/api` client
+- Frontend `types/rocket.type.ts` mirroring backend DTOs (`Rocket`, `CreateRocketDto`, `UpdateRocketDto`, `ROCKET_RANGES`, capacity bounds); the API stays the single source of truth
+- Pure `validation/rocket-form.ts` (`validateRocketForm`) mirroring backend rules (non-empty `name`, `range` in the allowed set, integer `capacity` in `[1,10]`) for fast inline feedback
+- Lazy-loaded `/agency/rockets` route linked from `AgencyView`
+- Vitest unit tests for `rockets-api`, the API-client error parsing, and `validateRocketForm`; Playwright E2E suite (`tests/frontend-rockets.spec.ts`) covering every acceptance criterion
+
+### Changed
+- API client `request<T>()` now parses non-2xx JSON bodies (`errors: string[]` / `message`) into `ApiError.message` for meaningful error feedback, backward compatible with existing callers
+- `AgencyView` now hosts/links the rocket management screen instead of acting as a placeholder
+
 ## [1.6.0] - 2026-06-28
 
 ### Added
