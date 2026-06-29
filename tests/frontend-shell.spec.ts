@@ -146,11 +146,17 @@ test.describe("Frontend App Shell - Acceptance Criteria", () => {
     await expect(page.getByText("API reachable")).toBeVisible({ timeout: 5000 });
   });
 
-  // AC8: reusable empty state on the agency placeholder.
-  test("shows a reusable empty state on the agency area", async ({ page }) => {
+  // AC8: the agency area now hosts the rocket-management entry (FR10); the
+  // reusable empty state moved to the rockets screen (see frontend-rockets.spec).
+  test("shows the agency area with the rocket-management entry", async ({
+    page,
+  }) => {
     await page.goto(`${APP_URL}/agency`);
     await expect(
-      page.getByText("No rockets or launches to manage yet."),
+      page.getByRole("heading", { level: 1, name: "Agency" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Manage rockets" }),
     ).toBeVisible();
   });
 

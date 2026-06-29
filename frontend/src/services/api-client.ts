@@ -12,6 +12,33 @@ function toApiError(status: number, message: string): ApiError {
 }
 
 /**
+ * Best-effort parse of a non-2xx JSON body into a meaningful message.
+ * Backend errors use `{ errors: string[] }` (validation) or `{ error | message }`.
+ * Falls back to the generic status text when the body is missing or unreadable.
+ */
+async function readErrorMessage(response: Response): Promise<string> {
+  const fallback = `Request failed (${response.status})`
+  try {
+    const body = (await response.json()) as unknown
+    if (body && typeof body === 'object') {
+      const { errors, error, message } = body as {
+        errors?: unknown
+        error?: unknown
+        message?: unknown
+      }
+      if (Array.isArray(errors) && errors.length > 0) {
+        return errors.filter((e) => typeof e === 'string').join(', ') || fallback
+      }
+      if (typeof error === 'string' && error.length > 0) return error
+      if (typeof message === 'string' && message.length > 0) return message
+    }
+    return fallback
+  } catch {
+    return fallback
+  }
+}
+
+/**
  * Single typed HTTP entry point. Returns a discriminated `ApiResult<T>` so
  * callers never deal with raw throws. Network errors and timeouts map to
  * status 0; non-2xx responses keep their HTTP status.
@@ -36,8 +63,13 @@ export async function request<T>(
     if (!response.ok) {
       return {
         ok: false,
-        error: toApiError(response.status, `Request failed (${response.status})`),
+        error: toApiError(response.status, await readErrorMessage(response)),
       }
+    }
+
+    // 204 No Content (e.g. DELETE) has no body to parse.
+    if (response.status === 204) {
+      return { ok: true, data: undefined as T }
     }
 
     const data = (await response.json()) as T
