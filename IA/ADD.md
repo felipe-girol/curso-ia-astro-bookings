@@ -205,19 +205,22 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 │           ├── bookings.repository.ts
 │           ├── bookings.service.ts
 │           └── bookings.router.ts
-└── frontend/                  # Vue 3 + Vite SPA (app shell, FR9)
+└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket UI FR10 + launch UI FR11)
     ├── .env                   # VITE_API_BASE_URL (default /api)
     ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
         ├── main.ts            # bootstrap + router registration
         ├── App.vue            # <AppLayout> + <RouterView>
-        ├── router/index.ts    # routes + catch-all (not-found)
-        ├── types/             # api.type.ts (ApiResult<T>/ApiError), health.type.ts
-        ├── services/api-client.ts  # typed request<T>() + getHealth()
+        ├── router/index.ts    # routes + catch-all; /agency/rockets + /agency/launches lazy-loaded
+        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts
+        ├── services/          # api-client.ts, rockets-api.ts, launches-api.ts
+        ├── validation/        # rocket-form.ts, launch-form.ts (pure validators)
         ├── composables/use-async.ts  # loading/error/data + retry
-        ├── components/        # AppLayout, AppNav, HealthIndicator,
-        │                      #   LoadingState, EmptyState, ErrorState
-        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView
+        ├── components/        # AppLayout, AppNav, HealthIndicator, LoadingState,
+        │                      #   EmptyState, ErrorState, ConfirmDialog,
+        │                      #   RocketForm, RocketList, LaunchForm, LaunchList
+        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView,
+                               #   RocketsView, LaunchesView
 ```
 
 API surface (target):

@@ -84,7 +84,7 @@ Out of scope:
 ### FR11 Launch management UI
 - **Description**: Provide agency screens to list, create, edit, and delete launches via `/api/launches`, including rocket selection and validation feedback for mission, date, price per seat, minimum passengers, and seats offered (builds on FR4, FR5).
 - **Priority**: Low
-- **Status**: InProgress
+- **Status**: Implemented
 
 ### FR12 Launch catalog and availability browsing
 - **Description**: Provide a customer-facing catalog that lists launches from `/api/launches` with mission, date, price per seat, and derived remaining seat availability, plus a launch detail view (builds on FR7 availability).
