@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.8.0] - 2026-06-30
+
+### Added
+- Launch management UI (FR11): Agency screen to list, create, edit, and delete launches via `/api/launches`, building on the app shell (FR9), rocket management UI (FR10), and the launch CRUD API (FR4/FR5)
+- `LaunchesView` orchestrating the screen through the shared `use-async` composable: loads launches and rockets together, rendering `LoadingState` while loading, `ErrorState` with retry on failure, `EmptyState` when no launches exist, else the launch list
+- `LaunchList` presentational table of `mission`, resolved rocket name, `date`, `pricePerSeat`, `minPassengers`, and `seatsOffered` with per-row edit and delete actions; degrades gracefully when a `rocketId` has no matching rocket
+- Reusable `LaunchForm` serving both create (empty) and edit (pre-filled) with a rocket selector populated from `/api/rockets`, inline per-field validation feedback, and preserved input on submit failure
+- `ConfirmDialog` confirmation step before issuing `DELETE /api/launches/:id`
+- Typed `services/launches-api.ts` (`listLaunches`/`createLaunch`/`updateLaunch`/`deleteLaunch`) returning the discriminated `ApiResult<T>` through the single `/api` client
+- Frontend `types/launch.type.ts` mirroring backend DTOs (`Launch`, `CreateLaunchDto`, `UpdateLaunchDto`); the API stays the single source of truth
+- Pure `validation/launch-form.ts` (`validateLaunchForm`) mirroring backend rules (FR5): known `rocketId`, non-empty `mission`, future `date`, positive `pricePerSeat`, integer `seatsOffered <=` selected rocket capacity, integer `minPassengers <= seatsOffered`
+- Lazy-loaded `/agency/launches` route linked from `AgencyView`
+- Vitest unit tests for `validateLaunchForm`; Playwright E2E suite (`tests/frontend-launches.spec.ts`) covering every acceptance criterion
+
 ## [1.7.0] - 2026-06-29
 
 ### Added

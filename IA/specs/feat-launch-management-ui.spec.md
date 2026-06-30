@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR11 (builds on FR4, FR5; depends on FR1/FR2 rockets, FR9 app shell, FR10 rocket UI).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Released
 
 ## Problem Description
 
@@ -51,12 +51,12 @@ Agency owners can manage rockets through the UI (FR10), but launches can only be
 
 ## Acceptance Criteria
 
-- [ ] WHEN the agency user opens the launches screen THE Launch Management UI SHALL request launches from `/api/launches` and display each launch's mission, rocket name, date, price per seat, minimum passengers, and seats offered.
-- [ ] WHILE the launches request is in progress THE Launch Management UI SHALL show the shared loading state.
-- [ ] IF the launches request fails THEN THE Launch Management UI SHALL show the shared error state with a retry action.
-- [ ] WHEN no launches exist THE Launch Management UI SHALL show the shared empty state.
-- [ ] WHEN the agency user opens the launch form THE Launch Management UI SHALL offer rocket selection populated from `/api/rockets`.
-- [ ] IF any field violates the launch validation rules THEN THE Launch Management UI SHALL show field-specific validation messages and SHALL NOT submit the form.
-- [ ] WHEN the agency user submits a valid new launch THE Launch Management UI SHALL create it via `POST /api/launches` and SHALL show the new launch in the list.
-- [ ] WHEN the agency user submits a valid edit THE Launch Management UI SHALL update it via `PUT /api/launches/:id` and SHALL reflect the updated values in the list.
-- [ ] WHEN the agency user confirms deletion of a launch THE Launch Management UI SHALL delete it via `DELETE /api/launches/:id` and SHALL remove it from the list.
+- [x] WHEN the agency user opens the launches screen THE Launch Management UI SHALL request launches from `/api/launches` and display each launch's mission, rocket name, date, price per seat, minimum passengers, and seats offered.
+- [x] WHILE the launches request is in progress THE Launch Management UI SHALL show the shared loading state.
+- [x] IF the launches request fails THEN THE Launch Management UI SHALL show the shared error state with a retry action.
+- [x] WHEN no launches exist THE Launch Management UI SHALL show the shared empty state.
+- [x] WHEN the agency user opens the launch form THE Launch Management UI SHALL offer rocket selection populated from `/api/rockets`.
+- [x] IF any field violates the launch validation rules THEN THE Launch Management UI SHALL show field-specific validation messages and SHALL NOT submit the form.
+- [x] WHEN the agency user submits a valid new launch THE Launch Management UI SHALL create it via `POST /api/launches` and SHALL show the new launch in the list.
+- [x] WHEN the agency user submits a valid edit THE Launch Management UI SHALL update it via `PUT /api/launches/:id` and SHALL reflect the updated values in the list.
+- [x] WHEN the agency user confirms deletion of a launch THE Launch Management UI SHALL delete it via `DELETE /api/launches/:id` and SHALL remove it from the list.
