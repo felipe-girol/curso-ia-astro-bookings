@@ -25,6 +25,16 @@ const routes: RouteRecordRaw[] = [
     component: () => import('../views/CustomerView.vue'),
   },
   {
+    path: '/customer/launches',
+    name: 'customer-launches',
+    component: () => import('../views/LaunchCatalogView.vue'),
+  },
+  {
+    path: '/customer/launches/:id',
+    name: 'customer-launch-detail',
+    component: () => import('../views/LaunchDetailView.vue'),
+  },
+  {
     path: '/:pathMatch(.*)*',
     name: 'not-found',
     component: () => import('../views/NotFoundView.vue'),

@@ -14,6 +14,13 @@ export type Launch = {
   seatsOffered: number
 }
 
+/**
+ * Read shape returned by `GET /api/launches` and `GET /api/launches/:id`: a
+ * launch enriched with the API-derived, read-only `seatsAvailable` field
+ * (seats offered minus seats booked). The frontend never recomputes it.
+ */
+export type LaunchView = Launch & { seatsAvailable: number }
+
 /** Payload for `POST /api/launches`. */
 export type CreateLaunchDto = Pick<
   Launch,
