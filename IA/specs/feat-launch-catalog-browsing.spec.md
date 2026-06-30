@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR12 (builds on FR4, FR5, FR7; depends on FR9 app shell). Requires a small backend enhancement to FR4/FR7 (see Solution Overview).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Released
 
 ## Problem Description
 

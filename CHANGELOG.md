@@ -1,5 +1,19 @@
 # Changelog
 
+## [1.9.0] - 2026-06-30
+
+### Added
+- Launch catalog and availability browsing (FR12): customer-facing, read-only catalog listing the launch program from `/api/launches`, plus a launch detail view, building on the app shell (FR9) and the derived seat availability (FR4/FR7)
+- Backend: launch read responses (`GET /api/launches` and `GET /api/launches/:id`) now expose a derived, read-only `seatsAvailable` field (`seatsOffered` minus seats already booked) via a new `withAvailability(launch)` helper in `launches.service.ts` reusing `bookings.service.getRemainingSeats`; the field is computed on read, never stored, and never accepted on create/update
+- Backend `LaunchView = Launch & { seatsAvailable: number }` read type in `types/launches.type.ts`; create/update DTOs unchanged
+- `LaunchCatalogView` orchestrating the catalog through the shared `use-async` composable: loads launches and rockets together, rendering `LoadingState` while loading, `ErrorState` with retry on failure, `EmptyState` when no launches exist, else the catalog
+- `LaunchCatalogList` presentational component rendering each launch's mission, resolved rocket name, date, price per seat, and remaining `seatsAvailable`, with an accessible sold-out indicator WHEN `seatsAvailable === 0`; degrades gracefully when a `rocketId` has no matching rocket
+- `LaunchDetailView` loading `GET /api/launches/:id` + rockets via `use-async`, showing mission, rocket name, date, price per seat, minimum passengers, seats offered, and seats available, with a sold-out indicator and an `ErrorState` (retry/back) for a non-existent launch
+- `utils/launch-format.ts` pure helpers for date/price formatting and sold-out presentation
+- Typed `services/launches-api.ts` now returns `ApiResult<LaunchView[]>` from `listLaunches()` and adds `getLaunch(id): Promise<ApiResult<LaunchView>>`; frontend `types/launch.type.ts` mirrors the enhanced read shape (`LaunchView`)
+- Lazy-loaded `/customer/launches` and `/customer/launches/:id` routes linked from `CustomerView`
+- Vitest unit tests for `withAvailability` (no bookings, partial, and sold-out cases) and `launch-format`; Playwright coverage asserting `seatsAvailable` on the launch list/detail endpoints and a frontend E2E suite (`tests/frontend-launch-catalog.spec.ts`) covering catalog load, loading/empty/error+retry, sold-out marking, select → detail, detail fields, and detail error for a non-existent id
+
 ## [1.8.0] - 2026-06-30
 
 ### Added

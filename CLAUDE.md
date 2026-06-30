@@ -85,19 +85,20 @@ cd frontend && npm run test:dev  # watch mode
 │       ├── launches/          # repository + service + validation + router
 │       ├── customers/         # repository + router
 │       └── bookings/          # repository + service + validation + router
-└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket management UI FR10 + launch management UI FR11)
+└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket management UI FR10 + launch management UI FR11 + launch catalog browsing FR12)
     ├── .env                   # VITE_API_BASE_URL (default /api)
     ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
         ├── main.ts            # bootstrap + router registration
         ├── App.vue            # <AppLayout> + <RouterView>
-        ├── router/index.ts    # routes + catch-all (not-found); /agency/rockets + /agency/launches lazy-loaded
-        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts (mirror backend DTOs)
-        ├── services/          # api-client.ts (typed request<T>() + getHealth()), rockets-api.ts, launches-api.ts
+        ├── router/index.ts    # routes + catch-all (not-found); /agency/rockets, /agency/launches, /customer/launches(/:id) lazy-loaded
+        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts (incl. LaunchView w/ seatsAvailable; mirror backend DTOs)
+        ├── services/          # api-client.ts (typed request<T>() + getHealth()), rockets-api.ts, launches-api.ts (list/getLaunch return LaunchView)
         ├── validation/        # rocket-form.ts, launch-form.ts (pure validators mirroring backend rules)
+        ├── utils/             # launch-format.ts (date/price formatting + sold-out helpers)
         ├── composables/       # use-async.ts (loading/error/data + retry)
-        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState, RocketForm, RocketList, LaunchForm, LaunchList, ConfirmDialog
-        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView, RocketsView, LaunchesView
+        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState, RocketForm, RocketList, LaunchForm, LaunchList, LaunchCatalogList, ConfirmDialog
+        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView, RocketsView, LaunchesView, LaunchCatalogView, LaunchDetailView
 ```
 
 ### Frontend conventions
@@ -109,7 +110,7 @@ cd frontend && npm run test:dev  # watch mode
 ### API Endpoints
 - `GET /api/health` - Health check
 - `GET|POST /api/rockets`, `GET|PUT|DELETE /api/rockets/:id`
-- `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id`
+- `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id` (launch reads include derived read-only `seatsAvailable`, FR12)
 - `GET|POST /api/customers`, `GET /api/customers/:id`
 - `GET|POST /api/bookings`, `GET /api/bookings/:id` (billing via mock gateway on create, FR8)
 

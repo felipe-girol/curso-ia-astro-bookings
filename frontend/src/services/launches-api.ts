@@ -1,13 +1,21 @@
 import type { ApiResult } from '../types/api.type'
-import type { CreateLaunchDto, Launch, UpdateLaunchDto } from '../types/launch.type'
+import type { CreateLaunchDto, Launch, LaunchView, UpdateLaunchDto } from '../types/launch.type'
 import { request } from './api-client'
 
 /** JSON headers for write operations. */
 const JSON_HEADERS = { 'Content-Type': 'application/json' }
 
-/** `GET /api/launches` — list the whole launch program. */
-export function listLaunches(): Promise<ApiResult<Launch[]>> {
-  return request<Launch[]>('/launches')
+/**
+ * `GET /api/launches` — list the whole launch program, each launch enriched
+ * with the API-derived `seatsAvailable` field for catalog browsing.
+ */
+export function listLaunches(): Promise<ApiResult<LaunchView[]>> {
+  return request<LaunchView[]>('/launches')
+}
+
+/** `GET /api/launches/:id` — read a single launch with its `seatsAvailable`. */
+export function getLaunch(id: string): Promise<ApiResult<LaunchView>> {
+  return request<LaunchView>(`/launches/${id}`)
 }
 
 /** `POST /api/launches` — schedule a launch, returns the created entity. */
