@@ -109,7 +109,7 @@ Wire list, form, rocket loading, and delete together via the shared async states
 Typecheck, test, and confirm acceptance criteria end-to-end.
 - [ ] `cd frontend && npm run test` (Vitest) green for the new validation/service tests; `npm run build` (`vue-tsc -b && vite build`) passes with no type errors.
 - [ ] Manual check with backend running (`cd backend && npm run dev` + `cd frontend && npm run dev`): list loads with rocket names, loading/empty/error+retry render, rocket selector populated, create/edit/delete reflect in the list, inline validation blocks bad input (capacity/threshold/future-date), server errors preserve form values.
-- [ ] Add a Playwright E2E suite (`tests/frontend-launches.spec.ts`) covering every acceptance criterion (load+list with rocket names, loading, empty, rocket-select populated, create, edit, delete-confirm, client validation block, API error+retry+preserved values).
+- [x] Add a Playwright E2E suite (`tests/frontend-launches.spec.ts`) covering every acceptance criterion (load+list with rocket names, loading, empty, rocket-select populated, create, edit, delete-confirm, client validation block, API error+retry+preserved values).
 - [ ] Update PRD FR11 status `NotStarted → InProgress`; set this spec status `Planned → InProgress` while building (Done on completion).
 
 ## Acceptance Criteria coverage
