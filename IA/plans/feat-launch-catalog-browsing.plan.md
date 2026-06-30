@@ -84,8 +84,8 @@ Serve remaining availability from the API as a read-only derived field.
 
 ### Step 2: Backend — tests for the derived field
 Prove `seatsAvailable` is correct, read-only, and consistent with bookings.
-- [ ] Extend `launches.service.test.ts` (Vitest): `withAvailability` returns `seatsOffered` with no bookings, and `seatsOffered − booked` after bookings, including the zero (sold-out) case.
-- [ ] Extend `tests/launches.spec.ts` (Playwright): `GET /api/launches` and `GET /api/launches/:id` include `seatsAvailable`; value drops after a booking; the field is not stored/echoed by create/update.
+- [x] Extend `launches.service.test.ts` (Vitest): `withAvailability` returns `seatsOffered` with no bookings, and `seatsOffered − booked` after bookings, including the zero (sold-out) case.
+- [x] Extend `tests/launches.spec.ts` (Playwright): `GET /api/launches` and `GET /api/launches/:id` include `seatsAvailable`; value drops after a booking; the field is not stored/echoed by create/update.
 
 ### Step 3: Frontend — read types and catalog API
 Mirror the enhanced read shape and expose typed catalog reads.
@@ -107,8 +107,8 @@ Wire loading/empty/error states and navigation via the shared async primitives.
 
 ### Step 6: Verify and finalize
 Typecheck, test, and confirm every acceptance criterion end-to-end.
-- [ ] `cd backend && npm run test` and `cd frontend && npm run test` green; `cd backend && npm run build` and `cd frontend && npm run build` (`vue-tsc -b && vite build`) pass with no type errors.
-- [ ] Add a Playwright E2E suite (e.g. `tests/frontend-launch-catalog.spec.ts`) covering: catalog load with rocket names + seats available, loading, empty, error+retry, sold-out marking, select → detail, detail fields, and detail error for a non-existent id.
+- [x] `cd backend && npm run test` and `cd frontend && npm run test` green; `cd backend && npm run build` and `cd frontend && npm run build` (`vue-tsc -b && vite build`) pass with no type errors.
+- [x] Add a Playwright E2E suite (e.g. `tests/frontend-launch-catalog.spec.ts`) covering: catalog load with rocket names + seats available, loading, empty, error+retry, sold-out marking, select → detail, detail fields, and detail error for a non-existent id.
 - [ ] Manual check (backend + frontend dev running): catalog lists launches with names/availability, sold-out shows at zero seats, detail opens and shows all fields, error+retry works, non-existent id shows the error state.
 - [ ] Update PRD FR12 status `Planned → InProgress`; set this spec status `Planned → InProgress` while building (Done on completion). `IA/ERM.md` unchanged.
 

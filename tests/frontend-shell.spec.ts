@@ -160,11 +160,16 @@ test.describe("Frontend App Shell - Acceptance Criteria", () => {
     ).toBeVisible();
   });
 
-  // AC8: reusable empty state on the customer placeholder.
-  test("shows a reusable empty state on the customer area", async ({ page }) => {
+  // AC8: the customer area surfaces the launch-catalog entry point (FR12).
+  test("shows the customer area with the launch-catalog entry", async ({
+    page,
+  }) => {
     await page.goto(`${APP_URL}/customer`);
     await expect(
-      page.getByText("No launches available to book yet."),
+      page.getByRole("heading", { level: 1, name: "Customer" }),
+    ).toBeVisible();
+    await expect(
+      page.getByRole("link", { name: "Browse launch catalog" }),
     ).toBeVisible();
   });
 
