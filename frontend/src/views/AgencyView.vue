@@ -5,11 +5,16 @@ import { RouterLink } from 'vue-router'
 <template>
   <section aria-labelledby="agency-h">
     <h1 id="agency-h">Agency</h1>
-    <p>Manage your rocket fleet and, soon, your launches.</p>
+    <p>Manage your rocket fleet and your launches.</p>
     <ul class="agency-links">
       <li>
         <RouterLink to="/agency/rockets" class="agency-link">
           Manage rockets
+        </RouterLink>
+      </li>
+      <li>
+        <RouterLink to="/agency/launches" class="agency-link">
+          Manage launches
         </RouterLink>
       </li>
     </ul>
@@ -18,6 +23,10 @@ import { RouterLink } from 'vue-router'
 
 <style scoped>
 .agency-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
   margin: 0;
   padding: 0;
   list-style: none;

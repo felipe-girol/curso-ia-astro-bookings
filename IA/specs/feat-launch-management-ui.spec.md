@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR11 (builds on FR4, FR5; depends on FR1/FR2 rockets, FR9 app shell, FR10 rocket UI).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Coded
 
 ## Problem Description
 
