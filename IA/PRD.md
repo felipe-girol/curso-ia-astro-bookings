@@ -87,9 +87,11 @@ Out of scope:
 - **Status**: Implemented
 
 ### FR12 Launch catalog and availability browsing
-- **Description**: Provide a customer-facing catalog that lists launches from `/api/launches` with mission, date, price per seat, and derived remaining seat availability, plus a launch detail view (builds on FR7 availability).
+- **Description**: Provide a customer-facing catalog that lists launches from `/api/launches` with mission, date, price per seat, and remaining seat availability, plus a launch detail view, with a sold-out indication when no seats remain. Launch read responses expose a derived read-only `seatsAvailable` field (seats offered minus seats booked) so availability is not recomputed in the frontend (builds on FR4, FR7 availability).
 - **Priority**: Low
-- **Status**: NotStarted
+- **Status**: InProgress
+- **Plan**: [feat-launch-catalog-browsing](./plans/feat-launch-catalog-browsing.plan.md)
+- **Spec**: [feat-launch-catalog-browsing](./specs/feat-launch-catalog-browsing.spec.md)
 
 ### FR13 Customer booking flow
 - **Description**: Provide a customer flow to register or identify a customer by email via `/api/customers` and book one or more seats on a launch via `/api/bookings`, showing the billing outcome and a booking confirmation (builds on FR6, FR7, FR8).
