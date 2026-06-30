@@ -89,7 +89,7 @@ Out of scope:
 ### FR12 Launch catalog and availability browsing
 - **Description**: Provide a customer-facing catalog that lists launches from `/api/launches` with mission, date, price per seat, and remaining seat availability, plus a launch detail view, with a sold-out indication when no seats remain. Launch read responses expose a derived read-only `seatsAvailable` field (seats offered minus seats booked) so availability is not recomputed in the frontend (builds on FR4, FR7 availability).
 - **Priority**: Low
-- **Status**: InProgress
+- **Status**: Implemented
 - **Plan**: [feat-launch-catalog-browsing](./plans/feat-launch-catalog-browsing.plan.md)
 - **Spec**: [feat-launch-catalog-browsing](./specs/feat-launch-catalog-browsing.spec.md)
 

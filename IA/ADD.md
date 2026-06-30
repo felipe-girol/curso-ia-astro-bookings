@@ -205,22 +205,23 @@ Client POST /api/bookings { launchId, customerEmail, seats }
 │           ├── bookings.repository.ts
 │           ├── bookings.service.ts
 │           └── bookings.router.ts
-└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket UI FR10 + launch UI FR11)
+└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket UI FR10 + launch UI FR11 + launch catalog FR12)
     ├── .env                   # VITE_API_BASE_URL (default /api)
     ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
         ├── main.ts            # bootstrap + router registration
         ├── App.vue            # <AppLayout> + <RouterView>
-        ├── router/index.ts    # routes + catch-all; /agency/rockets + /agency/launches lazy-loaded
-        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts
-        ├── services/          # api-client.ts, rockets-api.ts, launches-api.ts
+        ├── router/index.ts    # routes + catch-all; /agency/rockets, /agency/launches, /customer/launches(/:id) lazy-loaded
+        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts (incl. LaunchView)
+        ├── services/          # api-client.ts, rockets-api.ts, launches-api.ts (list/getLaunch -> LaunchView)
         ├── validation/        # rocket-form.ts, launch-form.ts (pure validators)
+        ├── utils/launch-format.ts    # date/price formatting + sold-out helpers
         ├── composables/use-async.ts  # loading/error/data + retry
         ├── components/        # AppLayout, AppNav, HealthIndicator, LoadingState,
         │                      #   EmptyState, ErrorState, ConfirmDialog,
-        │                      #   RocketForm, RocketList, LaunchForm, LaunchList
+        │                      #   RocketForm, RocketList, LaunchForm, LaunchList, LaunchCatalogList
         └── views/             # HomeView, AgencyView, CustomerView, NotFoundView,
-                               #   RocketsView, LaunchesView
+                               #   RocketsView, LaunchesView, LaunchCatalogView, LaunchDetailView
 ```
 
 API surface (target):
@@ -230,8 +231,8 @@ API surface (target):
 | GET | `/api/health` | Health check | Implemented |
 | GET/POST | `/api/rockets` | List/create rockets | Implemented |
 | GET/PUT/DELETE | `/api/rockets/:id` | Read/update/delete rocket | Implemented |
-| GET/POST | `/api/launches` | List/create launches | Implemented |
-| GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch | Implemented |
+| GET/POST | `/api/launches` | List/create launches (reads include derived `seatsAvailable`) | Implemented |
+| GET/PUT/DELETE | `/api/launches/:id` | Read/update/delete launch (read includes derived `seatsAvailable`) | Implemented |
 | GET/POST | `/api/customers` | List/create customers | Implemented |
 | GET | `/api/customers/:id` | Read customer | Implemented |
 | GET/POST | `/api/bookings` | List/create bookings (`?launchId=` filter) | Implemented |
@@ -252,10 +253,10 @@ API surface (target):
 - **Consequences**: Zero setup, fast tests, simple repositories. Data is lost on restart and cannot be shared across processes; repository interface is kept narrow so a future DB adapter could replace it without touching routers/services.
 
 ### ADR 3: Derived seat availability
-- **Decision**: Compute remaining seats from `launch.seatsOffered` minus the sum of booking seats, rather than persisting a mutable counter.
+- **Decision**: Compute remaining seats from `launch.seatsOffered` minus the sum of booking seats, rather than persisting a mutable counter. Launch read responses (`GET /api/launches`, `GET /api/launches/:id`) expose this as a derived, read-only `seatsAvailable` field via `withAvailability(launch)` (reusing `getRemainingSeats`), so the customer catalog (FR12) never recomputes availability client-side; the field is never stored nor accepted on create/update.
 - **Status**: Accepted
-- **Context**: Avoids dual-write inconsistency between bookings and a counter.
-- **Consequences**: Always consistent; O(n) over a launch's bookings per check — negligible at demo scale. Single-process model avoids concurrency races.
+- **Context**: Avoids dual-write inconsistency between bookings and a counter; keeps the API the single source of truth for availability that the frontend only mirrors.
+- **Consequences**: Always consistent; O(n) over a launch's bookings per check — negligible at demo scale. Single-process model avoids concurrency races. Read DTOs (`LaunchView`) carry `seatsAvailable` while write DTOs stay unchanged.
 
 ### ADR 4: Mock payment gateway via adapter
 - **Decision**: Encapsulate billing behind a `payment-gateway` adapter exposing `charge(amount): PaymentResult` (discriminated union); the implementation is a deterministic mock. The booking service charges only after launch/customer/availability checks pass: a `paid` outcome persists the booking with `paymentStatus = paid` and the gateway reference; a `failed` outcome persists nothing and maps to `402 Payment Required`.
