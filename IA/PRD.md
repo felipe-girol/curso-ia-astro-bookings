@@ -96,7 +96,9 @@ Out of scope:
 ### FR13 Customer booking flow
 - **Description**: Provide a customer flow to register or identify a customer by email via `/api/customers` and book one or more seats on a launch via `/api/bookings`, showing the billing outcome and a booking confirmation (builds on FR6, FR7, FR8).
 - **Priority**: Low
-- **Status**: NotStarted
+- **Status**: InProgress
+- **Plan**: [feat-customer-booking-flow](./plans/feat-customer-booking-flow.plan.md)
+- **Spec**: [feat-customer-booking-flow](./specs/feat-customer-booking-flow.spec.md)
 
 ## Technical Requirements
 
