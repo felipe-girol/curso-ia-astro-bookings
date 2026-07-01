@@ -146,7 +146,7 @@ Seat availability is **derived** (launch `seatsOffered` minus sum of confirmed b
 Booking a seat (representative cross-entity flow):
 
 ```text
-Client POST /api/bookings { launchId, customerEmail, seats }
+Client POST /api/bookings { launchId, customerEmail, name, phone, seats }
   → bookings.router validates body shape
   → bookings.service:
        1. resolve/create customer by email (customers.repository)

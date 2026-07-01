@@ -1,5 +1,20 @@
 # Changelog
 
+## [1.10.0] - 2026-07-01
+
+### Added
+- Customer booking flow (FR13): customers can book seats on a launch directly from the launch detail view (`/customer/launches/:id`), building on the app shell (FR9), catalog browsing (FR12), and the booking/billing backend (FR6/FR7/FR8)
+- `BookingForm` presentational component capturing customer email, name, phone, and seat count, bounding seats to the launch's remaining `seatsAvailable`, showing the unit price and a live computed total (`seats × pricePerSeat`), with per-field validation feedback and a disabled submit while a request is in flight; hidden when the launch is sold out (`seatsAvailable === 0`)
+- Booking flow integrated inline into `LaunchDetailView`: submits `POST /api/bookings`, refreshes the launch read so `seatsAvailable` reflects the new booking, and renders a confirmation panel (mission, seats booked, total charged, payment reference, customer email) on success
+- Explicit outcome mapping in the UI: `201` → confirmation; `402` declined payment → payment-failed message (no seats reserved, no confirmation); `409` insufficient seats → availability message; `404` launch → shared `ErrorState`; `400`/validation → field feedback
+- Frontend `types/booking.type.ts` mirroring `Booking` and the email-based `CreateBookingDto`; typed `services/bookings-api.ts` (`createBooking(dto): ApiResult<Booking>`) through the single `/api` client; pure `validation/booking-form.ts` (`validateBookingForm`) mirroring backend rules
+- Playwright E2E suite (`tests/frontend-bookings.spec.ts`) and Vitest unit tests for `booking-form` validation covering every acceptance criterion
+
+### Changed
+- `POST /api/bookings` contract aligned to the ADD Data Flow / ADR 5: `CreateBookingDto` is now `{ launchId, customerEmail, name, phone, seats }` and the booking service resolves-or-creates the customer by email server-side (instead of requiring a pre-existing `customerId`), restoring conformance with the documented design; the `Booking` entity (with `customerId`) is unchanged
+- `bookings.validation.ts` now requires non-empty `customerEmail`/`name`/`phone` and a positive-integer `seats`; `bookings.router.ts` reads the new body fields while keeping the existing `404`/`409`/`402`/`201` status mapping
+- Updated backend Vitest/Playwright booking coverage for the email-based resolve-or-create contract
+
 ## [1.9.0] - 2026-06-30
 
 ### Added

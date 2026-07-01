@@ -3,7 +3,9 @@ import { validateCreateBooking } from "./bookings.validation.js";
 
 const VALID_BODY = {
   launchId: "launch-1",
-  customerId: "customer-1",
+  customerEmail: "ada@astro.test",
+  name: "Ada",
+  phone: "+100000000",
   seats: 2,
 };
 
@@ -13,21 +15,33 @@ describe("bookings.validation create", () => {
   });
 
   it("rejects a missing launchId", () => {
-    expect(validateCreateBooking({ customerId: "c", seats: 1 })).toContain("launchId must be a non-empty string");
+    expect(validateCreateBooking({ ...VALID_BODY, launchId: undefined })).toContain(
+      "launchId must be a non-empty string",
+    );
   });
 
   it("rejects an empty launchId", () => {
     expect(validateCreateBooking({ ...VALID_BODY, launchId: "  " })).toContain("launchId must be a non-empty string");
   });
 
-  it("rejects a missing customerId", () => {
-    expect(validateCreateBooking({ launchId: "l", seats: 1 })).toContain("customerId must be a non-empty string");
+  it("rejects a missing customerEmail", () => {
+    expect(validateCreateBooking({ ...VALID_BODY, customerEmail: undefined })).toContain(
+      "customerEmail must be a non-empty string",
+    );
   });
 
-  it("rejects an empty customerId", () => {
-    expect(validateCreateBooking({ ...VALID_BODY, customerId: "" })).toContain(
-      "customerId must be a non-empty string",
+  it("rejects an empty customerEmail", () => {
+    expect(validateCreateBooking({ ...VALID_BODY, customerEmail: "" })).toContain(
+      "customerEmail must be a non-empty string",
     );
+  });
+
+  it("rejects a missing name", () => {
+    expect(validateCreateBooking({ ...VALID_BODY, name: undefined })).toContain("name must be a non-empty string");
+  });
+
+  it("rejects a missing phone", () => {
+    expect(validateCreateBooking({ ...VALID_BODY, phone: undefined })).toContain("phone must be a non-empty string");
   });
 
   it("rejects a non-integer seats", () => {
@@ -39,6 +53,6 @@ describe("bookings.validation create", () => {
   });
 
   it("collects all errors for an empty body", () => {
-    expect(validateCreateBooking({}).length).toBe(3);
+    expect(validateCreateBooking({}).length).toBe(5);
   });
 });

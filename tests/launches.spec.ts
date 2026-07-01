@@ -2,7 +2,6 @@ import { test, expect, type APIRequestContext } from "@playwright/test";
 
 const LAUNCHES_URL = "http://localhost:3000/api/launches";
 const ROCKETS_URL = "http://localhost:3000/api/rockets";
-const CUSTOMERS_URL = "http://localhost:3000/api/customers";
 const BOOKINGS_URL = "http://localhost:3000/api/bookings";
 
 /** Returns an ISO date string a year in the future. */
@@ -231,18 +230,15 @@ test.describe("Launches API - Derived seatsAvailable (FR12)", () => {
   test("seatsAvailable decreases after a booking", async ({ request }) => {
     const { created } = await createLaunch(request); // seatsOffered: 4
 
-    const customerResponse = await request.post(CUSTOMERS_URL, {
+    // POST /api/bookings resolves-or-creates the customer by email (FR13/ADR 5).
+    const bookingResponse = await request.post(BOOKINGS_URL, {
       data: {
-        email: `passenger-${Date.now()}-${Math.random().toString(36).slice(2)}@astro.test`,
+        launchId: created.id,
+        customerEmail: `passenger-${Date.now()}-${Math.random().toString(36).slice(2)}@astro.test`,
         name: "Passenger",
         phone: "555-0100",
+        seats: 3,
       },
-    });
-    expect(customerResponse.status()).toBe(201);
-    const customer = await customerResponse.json();
-
-    const bookingResponse = await request.post(BOOKINGS_URL, {
-      data: { launchId: created.id, customerId: customer.id, seats: 3 },
     });
     expect(bookingResponse.status()).toBe(201);
 

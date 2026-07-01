@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR13 (builds on FR6, FR7, FR8; depends on FR12 catalog entry point and FR9 app shell).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Released
 - **Plan**: [feat-customer-booking-flow](../plans/feat-customer-booking-flow.plan.md)
 
 ## Problem Description
@@ -35,7 +35,7 @@ Customers can browse the launch catalog and open a launch detail (FR12), but the
 - The frontend does not recompute availability or price rules; it only mirrors `seatsAvailable` from the launch read (FR12) to bound input and shows the returned `totalPrice`, `paymentReference`, and `paymentStatus`.
 - Client-side validation (mirroring backend rules) blocks obviously invalid submissions: non-empty email, name, phone; seats an integer ≥ 1 and ≤ remaining `seatsAvailable`.
 - Mapped API outcomes: `201` → confirmation; `402` declined payment → payment-failed message (no seats reserved); `409` insufficient seats → availability message; `404` launch → not-found message; `400`/validation → field feedback.
-- No backend changes are required; FR6/FR7/FR8 endpoints already exist and FR12 already exposes `seatsAvailable`.
+- The `POST /api/bookings` contract is aligned to the ADD Data Flow / ADR 5 (email-based resolve-or-create): it now accepts `{ launchId, customerEmail, name, phone, seats }` and resolves-or-creates the customer by email server-side. (Supersedes the earlier "no backend changes required" note: the implementation had diverged from the ADD and required this small, contained change.)
 
 ### Persistence
 
@@ -43,12 +43,12 @@ Customers can browse the launch catalog and open a launch detail (FR12), but the
 
 ## Acceptance Criteria
 
-- [ ] WHEN a customer opens a launch that has remaining seats THE Booking Flow SHALL present a booking form capturing email, name, phone, and number of seats.
-- [ ] WHERE a launch has zero remaining seats THE Booking Flow SHALL prevent booking and SHALL NOT submit a booking request.
-- [ ] IF the customer submits seats that are not an integer between 1 and the launch's remaining seats, or leaves email, name, or phone empty, THEN THE Booking Flow SHALL show field-level validation feedback and SHALL NOT submit the request.
-- [ ] WHEN the seat count changes THE Booking Flow SHALL display the total price equal to seats multiplied by the launch price per seat.
-- [ ] WHEN the customer submits a valid booking THE Booking Flow SHALL send `POST /api/bookings` with the launch id, customer email, name, phone, and seats.
-- [ ] WHILE the booking request is in progress THE Booking Flow SHALL show the shared loading state and SHALL disable resubmission.
-- [ ] WHEN the booking request succeeds THE Booking Flow SHALL show a confirmation displaying the mission, seats booked, total charged, and payment reference.
-- [ ] IF the booking request fails because payment was declined (402) or seats are insufficient (409) THEN THE Booking Flow SHALL show the corresponding error message and SHALL NOT show a confirmation.
-- [ ] IF the booking request targets a non-existent launch (404) THEN THE Booking Flow SHALL show the shared error state.
+- [x] WHEN a customer opens a launch that has remaining seats THE Booking Flow SHALL present a booking form capturing email, name, phone, and number of seats.
+- [x] WHERE a launch has zero remaining seats THE Booking Flow SHALL prevent booking and SHALL NOT submit a booking request.
+- [x] IF the customer submits seats that are not an integer between 1 and the launch's remaining seats, or leaves email, name, or phone empty, THEN THE Booking Flow SHALL show field-level validation feedback and SHALL NOT submit the request.
+- [x] WHEN the seat count changes THE Booking Flow SHALL display the total price equal to seats multiplied by the launch price per seat.
+- [x] WHEN the customer submits a valid booking THE Booking Flow SHALL send `POST /api/bookings` with the launch id, customer email, name, phone, and seats.
+- [x] WHILE the booking request is in progress THE Booking Flow SHALL show the shared loading state and SHALL disable resubmission.
+- [x] WHEN the booking request succeeds THE Booking Flow SHALL show a confirmation displaying the mission, seats booked, total charged, and payment reference.
+- [x] IF the booking request fails because payment was declined (402) or seats are insufficient (409) THEN THE Booking Flow SHALL show the corresponding error message and SHALL NOT show a confirmation.
+- [x] IF the booking request targets a non-existent launch (404) THEN THE Booking Flow SHALL show the shared error state.

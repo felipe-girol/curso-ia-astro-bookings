@@ -3,7 +3,6 @@ import { test, expect, type APIRequestContext } from "@playwright/test";
 const BOOKINGS_URL = "http://localhost:3000/api/bookings";
 const LAUNCHES_URL = "http://localhost:3000/api/launches";
 const ROCKETS_URL = "http://localhost:3000/api/rockets";
-const CUSTOMERS_URL = "http://localhost:3000/api/customers";
 
 /** Returns an ISO date string a year in the future. */
 function futureDate(): string {
@@ -26,13 +25,16 @@ async function createRocket(request: APIRequestContext, capacity = 10): Promise<
   return (await response.json()).id as string;
 }
 
-/** Seeds a customer and returns its id. */
-async function createCustomer(request: APIRequestContext): Promise<string> {
-  const response = await request.post(CUSTOMERS_URL, {
-    data: { email: `customer-${unique()}@astrobookings.com`, name: "Neil Armstrong", phone: "+1-555-0100" },
-  });
-  expect(response.status()).toBe(201);
-  return (await response.json()).id as string;
+/** Customer identity used in a booking request (resolved-or-created by email). */
+type CustomerInput = { customerEmail: string; name: string; phone: string };
+
+/** Builds a unique customer identity for the email-based booking contract. */
+function customerInput(): CustomerInput {
+  return {
+    customerEmail: `customer-${unique()}@astrobookings.com`,
+    name: "Neil Armstrong",
+    phone: "+1-555-0100",
+  };
 }
 
 /** Seeds a launch and returns its id plus pricing/capacity details. */
@@ -58,24 +60,23 @@ async function createLaunch(
   return { launchId: body.id as string, pricePerSeat, seatsOffered };
 }
 
-/** Seeds a launch and a customer, returning everything needed for a booking. */
+/** Seeds a launch and a customer identity, returning everything for a booking. */
 async function seedBookingContext(
   request: APIRequestContext,
   overrides: { seatsOffered?: number; pricePerSeat?: number } = {},
 ) {
   const launch = await createLaunch(request, overrides);
-  const customerId = await createCustomer(request);
-  return { ...launch, customerId };
+  return { ...launch, customer: customerInput() };
 }
 
 test.describe("Bookings API - POST creation", () => {
   // AC: WHEN a valid POST is sent, THE API SHALL bill the booking and return it with a
   // unique id, computed totalPrice, createdAt, paid paymentStatus, a paymentReference, and status 201.
   test("POST valid booking returns 201 with id, totalPrice, createdAt, paid status and paymentReference", async ({ request }) => {
-    const { launchId, customerId, pricePerSeat } = await seedBookingContext(request);
+    const { launchId, customer, pricePerSeat } = await seedBookingContext(request);
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 3 },
+      data: { launchId, ...customer, seats: 3 },
     });
 
     expect(response.status()).toBe(201);
@@ -83,7 +84,8 @@ test.describe("Bookings API - POST creation", () => {
     expect(typeof body.id).toBe("string");
     expect(body.id.length).toBeGreaterThan(0);
     expect(body.launchId).toBe(launchId);
-    expect(body.customerId).toBe(customerId);
+    expect(typeof body.customerId).toBe("string");
+    expect(body.customerId.length).toBeGreaterThan(0);
     expect(body.seats).toBe(3);
     expect(body.totalPrice).toBe(3 * pricePerSeat);
     expect(body.paymentStatus).toBe("paid");
@@ -95,10 +97,10 @@ test.describe("Bookings API - POST creation", () => {
 
   // AC: WHEN THE API creates a booking, THE API SHALL set totalPrice to seats * pricePerSeat.
   test("POST booking computes totalPrice as seats multiplied by pricePerSeat", async ({ request }) => {
-    const { launchId, customerId, pricePerSeat } = await seedBookingContext(request, { pricePerSeat: 99_999, seatsOffered: 10 });
+    const { launchId, customer, pricePerSeat } = await seedBookingContext(request, { pricePerSeat: 99_999, seatsOffered: 10 });
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 5 },
+      data: { launchId, ...customer, seats: 5 },
     });
 
     expect(response.status()).toBe(201);
@@ -108,10 +110,10 @@ test.describe("Bookings API - POST creation", () => {
 
   // AC: Two valid bookings SHALL receive distinct unique identifiers.
   test("POST two bookings returns distinct ids", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request, { seatsOffered: 10 });
+    const { launchId, customer } = await seedBookingContext(request, { seatsOffered: 10 });
 
-    const first = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 1 } });
-    const second = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 1 } });
+    const first = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 1 } });
+    const second = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 1 } });
 
     const firstBody = await first.json();
     const secondBody = await second.json();
@@ -122,10 +124,8 @@ test.describe("Bookings API - POST creation", () => {
 test.describe("Bookings API - Cross-entity validation", () => {
   // AC: IF launchId does not reference an existing launch, THEN respond with 404.
   test("POST with unknown launchId returns 404 with error message", async ({ request }) => {
-    const customerId = await createCustomer(request);
-
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId: "non-existent-launch-id", customerId, seats: 1 },
+      data: { launchId: "non-existent-launch-id", ...customerInput(), seats: 1 },
     });
 
     expect(response.status()).toBe(404);
@@ -134,28 +134,37 @@ test.describe("Bookings API - Cross-entity validation", () => {
     expect(body.error).toMatch(/launch/i);
   });
 
-  // AC: IF customerId does not reference an existing customer, THEN respond with 404.
-  test("POST with unknown customerId returns 404 with error message", async ({ request }) => {
+  // ADR 5: an unknown customer email is resolved-or-created server-side, so a
+  // booking for a brand-new email still succeeds (no 404 for the customer).
+  test("POST with an unknown customer email creates the customer and returns 201", async ({ request }) => {
     const { launchId } = await createLaunch(request);
+    const customer = customerInput();
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId: "non-existent-customer-id", seats: 1 },
+      data: { launchId, ...customer, seats: 1 },
     });
 
-    expect(response.status()).toBe(404);
+    expect(response.status()).toBe(201);
     const body = await response.json();
-    expect(typeof body.error).toBe("string");
-    expect(body.error).toMatch(/customer/i);
+    expect(typeof body.customerId).toBe("string");
+    expect(body.customerId.length).toBeGreaterThan(0);
+
+    // The customer now exists and is reused (same id) on a second booking.
+    const second = await request.post(BOOKINGS_URL, {
+      data: { launchId, ...customer, seats: 1 },
+    });
+    expect(second.status()).toBe(201);
+    expect((await second.json()).customerId).toBe(body.customerId);
   });
 });
 
 test.describe("Bookings API - Field validation", () => {
   // AC: IF seats is not an integer >= 1, THEN reject with 400 validation error.
   test("POST with zero seats returns 400", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request);
+    const { launchId, customer } = await seedBookingContext(request);
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 0 },
+      data: { launchId, ...customer, seats: 0 },
     });
 
     expect(response.status()).toBe(400);
@@ -165,20 +174,31 @@ test.describe("Bookings API - Field validation", () => {
   });
 
   test("POST with negative seats returns 400", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request);
+    const { launchId, customer } = await seedBookingContext(request);
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: -2 },
+      data: { launchId, ...customer, seats: -2 },
     });
 
     expect(response.status()).toBe(400);
   });
 
   test("POST with non-integer seats returns 400", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request);
+    const { launchId, customer } = await seedBookingContext(request);
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 2.5 },
+      data: { launchId, ...customer, seats: 2.5 },
+    });
+
+    expect(response.status()).toBe(400);
+  });
+
+  // A missing customer email/name/phone is a field-shape violation (400).
+  test("POST without customer email returns 400", async ({ request }) => {
+    const { launchId } = await createLaunch(request);
+
+    const response = await request.post(BOOKINGS_URL, {
+      data: { launchId, name: "Neil Armstrong", phone: "+1-555-0100", seats: 1 },
     });
 
     expect(response.status()).toBe(400);
@@ -197,7 +217,7 @@ test.describe("Bookings API - Field validation", () => {
   // Field-shape validation precedes existence checks: invalid seats with unknown refs still 400.
   test("POST with invalid seats is rejected with 400 before existence checks", async ({ request }) => {
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId: "non-existent", customerId: "non-existent", seats: 0 },
+      data: { launchId: "non-existent", ...customerInput(), seats: 0 },
     });
     expect(response.status()).toBe(400);
   });
@@ -206,10 +226,10 @@ test.describe("Bookings API - Field validation", () => {
 test.describe("Bookings API - Availability constraint", () => {
   // AC: IF seats exceed the launch's remaining available seats, THEN reject with 409 conflict.
   test("POST with seats exceeding seatsOffered returns 409", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request, { seatsOffered: 4 });
+    const { launchId, customer } = await seedBookingContext(request, { seatsOffered: 4 });
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 5 },
+      data: { launchId, ...customer, seats: 5 },
     });
 
     expect(response.status()).toBe(409);
@@ -220,10 +240,10 @@ test.describe("Bookings API - Availability constraint", () => {
 
   // Boundary: seats equal to remaining availability is accepted.
   test("POST with seats equal to remaining availability returns 201", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request, { seatsOffered: 4 });
+    const { launchId, customer } = await seedBookingContext(request, { seatsOffered: 4 });
 
     const response = await request.post(BOOKINGS_URL, {
-      data: { launchId, customerId, seats: 4 },
+      data: { launchId, ...customer, seats: 4 },
     });
 
     expect(response.status()).toBe(201);
@@ -231,17 +251,17 @@ test.describe("Bookings API - Availability constraint", () => {
 
   // Availability is derived: an existing booking reduces remaining seats for the next one.
   test("POST exceeding remaining seats after a prior booking returns 409", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request, { seatsOffered: 5 });
+    const { launchId, customer } = await seedBookingContext(request, { seatsOffered: 5 });
 
-    const first = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 3 } });
+    const first = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 3 } });
     expect(first.status()).toBe(201);
 
     // Only 2 seats remain; requesting 3 must conflict.
-    const second = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 3 } });
+    const second = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 3 } });
     expect(second.status()).toBe(409);
 
     // Exactly 2 seats remain and is accepted.
-    const third = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 2 } });
+    const third = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 2 } });
     expect(third.status()).toBe(201);
   });
 });
@@ -249,8 +269,8 @@ test.describe("Bookings API - Availability constraint", () => {
 test.describe("Bookings API - Retrieval", () => {
   // AC: WHEN a GET is sent to /api/bookings, THE API SHALL return a list of all bookings.
   test("GET all bookings returns array including a created booking", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request);
-    const created = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 1 } });
+    const { launchId, customer } = await seedBookingContext(request);
+    const created = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 1 } });
     const createdBody = await created.json();
 
     const response = await request.get(BOOKINGS_URL);
@@ -267,10 +287,10 @@ test.describe("Bookings API - Retrieval", () => {
     const contextB = await seedBookingContext(request, { seatsOffered: 6 });
 
     const bookingA = await request.post(BOOKINGS_URL, {
-      data: { launchId: contextA.launchId, customerId: contextA.customerId, seats: 2 },
+      data: { launchId: contextA.launchId, ...contextA.customer, seats: 2 },
     });
     const bookingB = await request.post(BOOKINGS_URL, {
-      data: { launchId: contextB.launchId, customerId: contextB.customerId, seats: 2 },
+      data: { launchId: contextB.launchId, ...contextB.customer, seats: 2 },
     });
     const bookingAId = (await bookingA.json()).id;
     const bookingBId = (await bookingB.json()).id;
@@ -287,8 +307,8 @@ test.describe("Bookings API - Retrieval", () => {
 
   // AC: WHEN a GET is sent with an existing booking id, THE API SHALL return that booking.
   test("GET booking by id returns full details", async ({ request }) => {
-    const { launchId, customerId } = await seedBookingContext(request);
-    const created = await request.post(BOOKINGS_URL, { data: { launchId, customerId, seats: 2 } });
+    const { launchId, customer } = await seedBookingContext(request);
+    const created = await request.post(BOOKINGS_URL, { data: { launchId, ...customer, seats: 2 } });
     const createdBody = await created.json();
 
     const response = await request.get(`${BOOKINGS_URL}/${createdBody.id}`);
@@ -297,7 +317,7 @@ test.describe("Bookings API - Retrieval", () => {
     const body = await response.json();
     expect(body.id).toBe(createdBody.id);
     expect(body.launchId).toBe(launchId);
-    expect(body.customerId).toBe(customerId);
+    expect(body.customerId).toBe(createdBody.customerId);
     expect(body.seats).toBe(2);
     expect(body.paymentStatus).toBe("paid");
   });
