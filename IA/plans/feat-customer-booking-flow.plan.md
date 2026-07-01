@@ -156,7 +156,7 @@ Connect the form to the API, handle in-flight/confirmation/error states, map out
 ### Step 7: Verify and finalize
 Typecheck, test, and confirm every acceptance criterion end-to-end.
 - [ ] `cd backend && npm run test` and `cd frontend && npm run test` green; `cd backend && npm run build` and `cd frontend && npm run build` (`vue-tsc -b && vite build`) pass with no type errors.
-- [ ] Add Playwright E2E (e.g. `tests/frontend-bookings.spec.ts`) covering: form shown with remaining seats, hidden when sold out, field validation blocks submit, live total updates with seats, successful booking → confirmation (mission/seats/total/reference), `402`/`409` error messages without confirmation, and `404` error state.
+- [x] Add Playwright E2E (e.g. `tests/frontend-bookings.spec.ts`) covering: form shown with remaining seats, hidden when sold out, field validation blocks submit, live total updates with seats, successful booking → confirmation (mission/seats/total/reference), `402`/`409` error messages without confirmation, and `404` error state.
 - [ ] Manual check (backend + frontend dev running): book seats from detail, confirmation shows charge + reference, availability drops, declined/oversell/not-found paths surface the right messages.
 - [ ] Update PRD FR13 status `NotStarted → InProgress` (add Plan link); set this spec status `Planned → InProgress` while building (Done on completion). `IA/ERM.md` unchanged.
 
