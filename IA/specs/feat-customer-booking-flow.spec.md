@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR13 (builds on FR6, FR7, FR8; depends on FR12 catalog entry point and FR9 app shell).
 - **Issue**: _to be created_
-- **Status**: Planned
+- **Status**: Coded
 - **Plan**: [feat-customer-booking-flow](../plans/feat-customer-booking-flow.plan.md)
 
 ## Problem Description
@@ -35,7 +35,7 @@ Customers can browse the launch catalog and open a launch detail (FR12), but the
 - The frontend does not recompute availability or price rules; it only mirrors `seatsAvailable` from the launch read (FR12) to bound input and shows the returned `totalPrice`, `paymentReference`, and `paymentStatus`.
 - Client-side validation (mirroring backend rules) blocks obviously invalid submissions: non-empty email, name, phone; seats an integer ≥ 1 and ≤ remaining `seatsAvailable`.
 - Mapped API outcomes: `201` → confirmation; `402` declined payment → payment-failed message (no seats reserved); `409` insufficient seats → availability message; `404` launch → not-found message; `400`/validation → field feedback.
-- No backend changes are required; FR6/FR7/FR8 endpoints already exist and FR12 already exposes `seatsAvailable`.
+- The `POST /api/bookings` contract is aligned to the ADD Data Flow / ADR 5 (email-based resolve-or-create): it now accepts `{ launchId, customerEmail, name, phone, seats }` and resolves-or-creates the customer by email server-side. (Supersedes the earlier "no backend changes required" note: the implementation had diverged from the ADD and required this small, contained change.)
 
 ### Persistence
 

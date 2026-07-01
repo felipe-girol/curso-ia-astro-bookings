@@ -1,7 +1,6 @@
 import crypto from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { createBooking } from "../bookings/bookings.service.js";
-import * as customersRepository from "../customers/customers.repository.js";
 import * as rocketsRepository from "../rockets/rockets.repository.js";
 import type { CreateLaunchDto } from "../types/launches.type.js";
 import { createLaunch, updateLaunch, withAvailability } from "./launches.service.js";
@@ -93,12 +92,13 @@ describe("launches.service withAvailability", () => {
   }
 
   function bookSeats(launchId: string, seats: number) {
-    const customer = customersRepository.create({
-      email: `passenger-${crypto.randomUUID()}@astro.test`,
+    const result = createBooking({
+      launchId,
+      customerEmail: `passenger-${crypto.randomUUID()}@astro.test`,
       name: "Passenger",
       phone: "555-0100",
+      seats,
     });
-    const result = createBooking({ launchId, customerId: customer.id, seats });
     if (result.status !== "ok") throw new Error("booking setup failed");
   }
 

@@ -2,7 +2,9 @@ import { type FieldValidator, collectErrors, nonEmptyString, positiveInteger } f
 
 const FIELD_VALIDATORS: Record<string, FieldValidator> = {
   launchId: nonEmptyString("launchId"),
-  customerId: nonEmptyString("customerId"),
+  customerEmail: nonEmptyString("customerEmail"),
+  name: nonEmptyString("name"),
+  phone: nonEmptyString("phone"),
   seats: positiveInteger("seats"),
 };
 

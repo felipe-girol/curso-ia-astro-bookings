@@ -25,12 +25,25 @@ export function getRemainingSeats(launch: Launch): number {
   return launch.seatsOffered - booked;
 }
 
+/**
+ * Resolve the customer by email (natural key) or create one on the fly with the
+ * supplied name/phone. Keeps customer identity server-side per ADR 5.
+ */
+function resolveOrCreateCustomer(dto: CreateBookingDto): string {
+  const existing = customersRepository.findByEmail(dto.customerEmail);
+  if (existing) return existing.id;
+  const created = customersRepository.create({
+    email: dto.customerEmail,
+    name: dto.name,
+    phone: dto.phone,
+  });
+  logInfo(CONTEXT, `Created customer ${created.id} for booking`);
+  return created.id;
+}
+
 export function createBooking(dto: CreateBookingDto): CreateBookingResult {
   const launch = launchesRepository.findById(dto.launchId);
   if (!launch) return { status: "not-found", message: "Launch not found" };
-
-  const customer = customersRepository.findById(dto.customerId);
-  if (!customer) return { status: "not-found", message: "Customer not found" };
 
   const remaining = getRemainingSeats(launch);
   if (dto.seats > remaining) {
@@ -46,8 +59,11 @@ export function createBooking(dto: CreateBookingDto): CreateBookingResult {
     return { status: "payment-failed", message: payment.reason };
   }
 
+  const customerId = resolveOrCreateCustomer(dto);
   const booking = repository.create({
-    ...dto,
+    launchId: dto.launchId,
+    customerId,
+    seats: dto.seats,
     totalPrice,
     paymentStatus: "paid",
     paymentReference: payment.reference,

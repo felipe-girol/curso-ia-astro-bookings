@@ -38,8 +38,8 @@ bookingsRouter.post("/", (req, res) => {
     sendValidationErrors(res, errors);
     return;
   }
-  const { launchId, customerId, seats } = req.body;
-  const dto: CreateBookingDto = { launchId, customerId, seats };
+  const { launchId, customerEmail, name, phone, seats } = req.body;
+  const dto: CreateBookingDto = { launchId, customerEmail, name, phone, seats };
   const result = createBooking(dto);
   if (result.status === "not-found") {
     sendNotFound(res, result.message);
