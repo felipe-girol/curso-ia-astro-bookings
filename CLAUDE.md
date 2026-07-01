@@ -85,20 +85,20 @@ cd frontend && npm run test:dev  # watch mode
 │       ├── launches/          # repository + service + validation + router
 │       ├── customers/         # repository + router
 │       └── bookings/          # repository + service + validation + router
-└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket management UI FR10 + launch management UI FR11 + launch catalog browsing FR12)
+└── frontend/                  # Vue 3 + Vite SPA (app shell FR9 + rocket management UI FR10 + launch management UI FR11 + launch catalog browsing FR12 + customer booking flow FR13)
     ├── .env                   # VITE_API_BASE_URL (default /api)
     ├── vite.config.ts         # dev proxy /api -> http://localhost:3000
     └── src/
         ├── main.ts            # bootstrap + router registration
         ├── App.vue            # <AppLayout> + <RouterView>
         ├── router/index.ts    # routes + catch-all (not-found); /agency/rockets, /agency/launches, /customer/launches(/:id) lazy-loaded
-        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts (incl. LaunchView w/ seatsAvailable; mirror backend DTOs)
-        ├── services/          # api-client.ts (typed request<T>() + getHealth()), rockets-api.ts, launches-api.ts (list/getLaunch return LaunchView)
-        ├── validation/        # rocket-form.ts, launch-form.ts (pure validators mirroring backend rules)
+        ├── types/             # api.type.ts, health.type.ts, rocket.type.ts, launch.type.ts (incl. LaunchView w/ seatsAvailable), booking.type.ts (Booking + email-based CreateBookingDto); mirror backend DTOs
+        ├── services/          # api-client.ts (typed request<T>() + getHealth()), rockets-api.ts, launches-api.ts (list/getLaunch return LaunchView), bookings-api.ts (createBooking)
+        ├── validation/        # rocket-form.ts, launch-form.ts, booking-form.ts (pure validators mirroring backend rules)
         ├── utils/             # launch-format.ts (date/price formatting + sold-out helpers)
         ├── composables/       # use-async.ts (loading/error/data + retry)
-        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState, RocketForm, RocketList, LaunchForm, LaunchList, LaunchCatalogList, ConfirmDialog
-        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView, RocketsView, LaunchesView, LaunchCatalogView, LaunchDetailView
+        ├── components/        # AppLayout, AppNav, HealthIndicator, Loading/Empty/ErrorState, RocketForm, RocketList, LaunchForm, LaunchList, LaunchCatalogList, BookingForm, ConfirmDialog
+        └── views/             # HomeView, AgencyView, CustomerView, NotFoundView, RocketsView, LaunchesView, LaunchCatalogView, LaunchDetailView (inline booking flow FR13)
 ```
 
 ### Frontend conventions
@@ -112,7 +112,7 @@ cd frontend && npm run test:dev  # watch mode
 - `GET|POST /api/rockets`, `GET|PUT|DELETE /api/rockets/:id`
 - `GET|POST /api/launches`, `GET|PUT|DELETE /api/launches/:id` (launch reads include derived read-only `seatsAvailable`, FR12)
 - `GET|POST /api/customers`, `GET /api/customers/:id`
-- `GET|POST /api/bookings`, `GET /api/bookings/:id` (billing via mock gateway on create, FR8)
+- `GET|POST /api/bookings`, `GET /api/bookings/:id` (create takes `{ launchId, customerEmail, name, phone, seats }`, resolves-or-creates the customer by email per ADR 5, bills via mock gateway, FR8/FR13)
 
 ### Logging
 - Format: `[TIMESTAMP] [LEVEL] [CONTEXT] message`
@@ -127,7 +127,7 @@ cd frontend && npm run test:dev  # watch mode
 - Launch: `rocketId` exists, `seatsOffered` <= rocket capacity.
 - Launch: `minPassengers` <= `seatsOffered`, future `date`, positive `pricePerSeat`.
 - Customer: unique non-empty `email` (natural key), with name and phone.
-- Booking: `seats` <= remaining available seats on the launch.
+- Booking: non-empty `customerEmail`/`name`/`phone`, integer `seats` >= 1 and <= remaining available seats on the launch.
 
 ## Environment
 - Code and documentation must be in English.

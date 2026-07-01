@@ -2,7 +2,7 @@
 
 - **Reference**: [PRD](../PRD.md) FR13 (builds on FR6, FR7, FR8; depends on FR12 catalog entry point and FR9 app shell).
 - **Issue**: _to be created_
-- **Status**: Coded
+- **Status**: Released
 - **Plan**: [feat-customer-booking-flow](../plans/feat-customer-booking-flow.plan.md)
 
 ## Problem Description
